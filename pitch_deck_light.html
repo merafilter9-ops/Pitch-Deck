@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mera Filter — Investor Pitch Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── DESIGN TOKENS (LIGHT AURA & GLASS) ─── */
+:root {
+  /* Vibrant Accents */
+  --primary:        #4DB07D; /* Indigo 600 */
+  --primary-l:      #6FC39A; /* Indigo 500 */
+  --primary-pale:   #EAF5EF; /* Indigo 50 */
+  
+  --secondary:      #ECA918; /* Rose 500 */
+  --secondary-l:    #F2C04A; /* Rose 400 */
+  --secondary-pale: #FDF6E8; /* Rose 50 */
+  
+  --accent:         #4F46E5; /* Emerald 500 */
+  --accent-pale:    #EEF2FF;
+  
+  --warn:           #F59E0B; /* Amber 500 */
+  --warn-pale:      #FFFBEB;
+
+  /* Typography Colors */
+  --ink:          #0F172A; /* Slate 900 */
+  --ink-80:       #334155; /* Slate 700 */
+  --ink-55:       #64748B; /* Slate 500 */
+  --ink-15:       #CBD5E1; /* Slate 300 */
+  
+  /* Glass and Backgrounds */
+  --bg-main:      #F8FAFC;
+  --white:        #FFFFFF;
+  --glass-bg:     rgba(255, 255, 255, 0.65);
+  --glass-bg-hover: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-border-hover: rgba(111, 195, 154, 0.4);
+  --glass-shadow: 0 10px 40px -10px rgba(15, 23, 42, 0.08);
+
+  --max-w:        1140px;
+  --nav-h:        64px;
+
+  /* Typography scale */
+  --t-xs:   12px;
+  --t-sm:   14px;
+  --t-base: 18px; /* Increased from 16px for presentation readability */
+  --t-md:   20px; /* Increased from 18px */
+  --t-lg:   24px; /* Increased from 22px */
+  --t-xl:   32px; /* Increased from 28px */
+  --t-2xl:  40px; /* Increased from 36px */
+  --t-3xl:  48px;
+  --t-hero: 64px;
+  
+  /* Spacing Scale (Cards) */
+  --space-md: 20px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --radius-card: 20px;
+
+  --lh-tight: 1.15;
+  --lh-snug:  1.3;
+  --lh-normal:1.6;
+  --lh-loose: 1.75;
+
+  --fw-light:  300;
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semi:   600;
+  --fw-bold:   700;
+  --fw-black:  800;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: var(--t-base);
+  font-weight: var(--fw-normal);
+  line-height: var(--lh-normal);
+  color: var(--ink-80);
+  background-color: #F8FAFC;
+  /* Ambient Mesh Gradient Background */
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(111, 195, 154, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(236, 169, 24, 0.08), transparent 25%),
+    radial-gradient(circle at 50% 80%, rgba(79, 70, 229, 0.08), transparent 25%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── TYPOGRAPHY UTILITIES ─── */
+.display {
+  font-family: 'Outfit', sans-serif;
+  font-weight: var(--fw-black);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.03em;
+}
+.heading {
+  font-family: 'Outfit', sans-serif;
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.02em;
+}
+.label {
+  font-size: var(--t-xs);
+  font-weight: var(--fw-semi);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+.body-lg  { font-size: var(--t-md);   line-height: var(--lh-loose); }
+.body     { font-size: var(--t-base); line-height: var(--lh-normal); }
+.body-sm  { font-size: var(--t-sm);   line-height: var(--lh-normal); }
+.caption  { font-size: var(--t-xs);   line-height: var(--lh-snug); }
+
+/* ─── GLASSMORPHISM UTILITY ─── */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-card);
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.nav-logo {
+  font-family: 'Outfit', sans-serif;
+  font-weight: var(--fw-black);
+  font-size: var(--t-md);
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo span { color: var(--primary); }
+
+.nav-links { display: flex; gap: 4px; }
+.nav-link {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-sm);
+  font-weight: var(--fw-medium);
+  color: var(--ink-55);
+  background: none; border: none;
+  padding: 6px 14px; border-radius: var(--radius-card);
+  cursor: pointer; transition: all .2s ease;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--primary);
+  background: var(--primary-pale);
+}
+
+.nav-badge {
+  font-family: 'Outfit', sans-serif;
+  font-size: var(--t-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.08em;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--primary), #0ea5e9);
+  padding: 6px 16px; border-radius: var(--radius-card);
+  box-shadow: 0 4px 12px rgba(77, 176, 125, 0.3);
+}
+
+/* ─── SVG ENHANCEMENTS ─── */
+svg { transition: transform 0.3s ease, filter 0.3s ease; }
+.feat-ico:hover svg, .hiw-ico:hover svg, .c-ico:hover svg, .p-card:hover .p-icon svg {
+  transform: scale(1.15) rotate(3deg);
+}
+
+/* ─── SLIDE BASE ─── */
+.slide {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: calc(var(--nav-h) + 60px) 40px 80px;
+  position: relative;
+}
+.slide-inner { width: 100%; max-width: var(--max-w); position: relative; z-index: 2; }
+
+/* ─── SECTION HEADER ─── */
+.sec-label {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 12px;
+  display: inline-block;
+  background: var(--primary-pale);
+  padding: 4px 12px;
+  border-radius: var(--radius-card);
+}
+.sec-label.light { color: var(--primary); background: var(--primary-pale); } /* Ignored light constraint as all is light */
+
+.sec-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: var(--fw-black);
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.sec-title.light { color: var(--ink); }
+
+.sec-sub {
+  font-size: var(--t-md);
+  font-weight: var(--fw-normal);
+  line-height: var(--lh-loose);
+  color: var(--ink-55);
+  max-width: 600px;
+  margin-bottom: 48px;
+}
+.sec-sub.light { color: var(--ink-55); }
+
+/* ─── REVEAL ─── */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity .7s cubic-bezier(0.16, 1, 0.3, 1), transform .7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ══════════════════════════════════════
+   SLIDE 1 — HERO
+══════════════════════════════════════ */
+.hero-layout {
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 72px; align-items: center;
+  min-height: calc(100vh - var(--nav-h) - 80px);
+}
+
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: var(--t-sm); font-weight: var(--fw-bold);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--secondary);
+  background: var(--secondary-pale);
+  border: 1px solid rgba(236, 169, 24, 0.2);
+  padding: 8px 16px; border-radius: 30px;
+  margin-bottom: 28px;
+}
+.blink { width: 8px; height: 8px; border-radius: 50%; background: var(--secondary); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: var(--fw-black);
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+.hero-title .g { 
+  background: linear-gradient(135deg, var(--primary), #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-title .y { 
+  background: linear-gradient(135deg, var(--secondary), #F59E0B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-desc {
+  font-size: var(--t-md);
+  color: var(--ink-55);
+  line-height: 1.7; max-width: 500px; margin-bottom: 40px;
+}
+
+.hero-btns { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 48px; }
+
+.btn-primary {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-base); font-weight: var(--fw-semi);
+  color: var(--white);
+  background: var(--primary);
+  padding: 14px 32px; border-radius: 30px; border: none;
+  cursor: pointer; transition: all .2s ease;
+  box-shadow: 0 8px 20px rgba(77, 176, 125, 0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(77, 176, 125, 0.4); }
+
+.btn-ghost {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--t-base); font-weight: var(--fw-medium);
+  color: var(--ink-80);
+  background: rgba(255,255,255,0.5); border: 1px solid var(--ink-15);
+  padding: 13px 32px; border-radius: 30px;
+  cursor: pointer; transition: all .2s ease;
+}
+.btn-ghost:hover { background: var(--white); border-color: var(--ink-55); }
+
+.hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.h-stat {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px); border: 1px solid var(--glass-border);
+  border-radius: 16px; padding: 20px 24px;
+  box-shadow: var(--glass-shadow);
+}
+.h-stat-val {
+  font-family: 'Outfit', sans-serif; font-weight: var(--fw-black);
+  font-size: var(--t-2xl); color: var(--primary);
+  line-height: 1; margin-bottom: 6px; letter-spacing: -0.02em;
+}
+.h-stat-val sup { font-size: var(--t-md); }
+.h-stat-lbl { font-size: var(--t-sm); color: var(--ink-55); line-height: 1.4; font-weight: var(--fw-medium); }
+
+/* Hero diagram */
+.hero-diagram { width: 100%; max-width: 440px; aspect-ratio: 1; position: relative; margin: 0 auto; }
+.ring {
+  position: absolute; top: 50%; left: 50%; border-radius: 50%;
+  border: 1px dashed rgba(77, 176, 125, 0.2);
+  transform: translate(-50%,-50%); animation: spin linear infinite;
+}
+.ring:nth-child(1) { width: 280px; height: 280px; animation-duration: 30s; }
+.ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 45s; animation-direction: reverse; }
+@keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+.d-center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 100px; height: 100px;
+  background: var(--white); border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-shadow: 0 12px 32px rgba(77, 176, 125, 0.2); z-index: 3;
+}
+.d-center-icon svg { font-size: 50px; fill: var(--primary); }
+
+.d-node {
+  position: absolute; top: 50%; left: 50%;
+  width: 72px; height: 72px;
+  background: var(--white);
+  border: 1px solid rgba(77, 176, 125, 0.15);
+  border-radius: var(--radius-card);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; z-index: 4; box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+.d-node-icon { font-size: 22px; color: var(--secondary); }
+.d-node-lbl { font-family: 'Outfit', sans-serif; font-size: var(--t-xs); font-weight: var(--fw-bold); color: var(--ink-80); letter-spacing: 0.05em; }
+
+.d-node:nth-child(4) { animation: fn3 5s ease-in-out infinite; }
+.d-node:nth-child(5) { animation: fn4 5s ease-in-out infinite .8s; }
+.d-node:nth-child(6) { animation: fn5 5s ease-in-out infinite 1.6s; }
+.d-node:nth-child(7) { animation: fn6 5s ease-in-out infinite 2.4s; }
+@keyframes fn3 { 0%,100%{transform:translate(-50%,calc(-50% - 150px))} 50%{transform:translate(-50%,calc(-50% - 160px))} }
+@keyframes fn4 { 0%,100%{transform:translate(calc(-50% + 145px),calc(-50% - 30px))} 50%{transform:translate(calc(-50% + 145px),calc(-50% - 40px))} }
+@keyframes fn5 { 0%,100%{transform:translate(calc(-50% + 65px),calc(-50% + 135px))} 50%{transform:translate(calc(-50% + 65px),calc(-50% + 125px))} }
+@keyframes fn6 { 0%,100%{transform:translate(calc(-50% - 145px),calc(-50% + 50px))} 50%{transform:translate(calc(-50% - 145px),calc(-50% + 40px))} }
+
+/* ══════════════════════════════════════
+   SLIDE 2 — PROBLEM
+══════════════════════════════════════ */
+.problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+.p-card {
+  background: var(--glass-bg); backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-card);
+  padding: 32px 28px; position: relative; overflow: hidden;
+  box-shadow: var(--glass-shadow); transition: transform .3s, box-shadow .3s;
+}
+.p-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: var(--glass-border-hover); }
+.p-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), #0ea5e9); }
+.p-who { font-size: var(--t-xs); font-weight: var(--fw-bold); letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 12px; }
+.p-icon { font-size: 32px; margin-bottom: 16px; display: block; color: var(--ink); }
+.p-name { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 16px; letter-spacing: -0.02em; line-height: 1.2; }
+.p-list { list-style: none; }
+.p-list li { font-size: var(--t-sm); color: var(--ink-80); padding: 8px 0; border-bottom: 1px dashed var(--ink-15); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+.p-list li:last-child { border-bottom: none; }
+.p-list li::before { content: '→'; color: var(--secondary); flex-shrink: 0; font-weight: var(--fw-bold); }
+
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--white); border-radius: var(--radius-card); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--ink-15); }
+.s-item { padding: 32px; text-align: center; border-right: 1px solid var(--ink-15); }
+.s-item:last-child { border-right: none; }
+.s-val { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: 42px; color: var(--primary); line-height: 1; margin-bottom: 8px; letter-spacing: -0.02em; }
+.s-lbl { font-size: var(--t-sm); color: var(--ink-55); line-height: 1.5; font-weight: var(--fw-medium); }
+
+/* ══════════════════════════════════════
+   SLIDE 3 — SOLUTION
+══════════════════════════════════════ */
+.sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.sol-steps { display: flex; flex-direction: column; gap: 16px; }
+.sol-step {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--white); border: 1px solid var(--ink-15);
+  border-radius: 16px; padding: 24px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  transition: all .2s ease;
+}
+.sol-step:hover { transform: translateX(5px); border-color: var(--primary-l); box-shadow: 0 8px 25px rgba(77, 176, 125, 0.1); }
+.sn { width: 36px; height: 36px; border-radius: 10px; background: var(--primary-pale); color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: var(--t-base); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sn-title { font-family: 'Outfit', sans-serif; font-size: var(--t-md); font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em; }
+.sn-desc { font-size: var(--t-sm); color: var(--ink-55); line-height: 1.6; }
+
+.features { display: flex; flex-direction: column; gap: 16px; }
+.feat {
+  background: var(--glass-bg); backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px 24px;
+  display: flex; gap: 16px; align-items: center;
+  box-shadow: var(--glass-shadow);
+}
+.feat-ico { width: 48px; height: 48px; border-radius: 12px; background: var(--secondary-pale); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.feat-name { font-family: 'Outfit', sans-serif; font-size: var(--t-base); font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 4px; letter-spacing: -0.01em; }
+.feat-desc { font-size: var(--t-sm); color: var(--ink-55); line-height: 1.6; }
+
+/* ══════════════════════════════════════
+   SLIDE 4 — MARKET
+══════════════════════════════════════ */
+.mkt-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: center; }
+.mkt-hero-num { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: clamp(64px, 8vw, 110px); color: var(--primary); line-height: 0.9; letter-spacing: -0.04em; margin-bottom: 12px; }
+.mkt-hero-lbl { font-size: var(--t-md); color: var(--ink-55); margin-bottom: 40px; line-height: 1.5; font-weight: var(--fw-medium); }
+.seg-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+.seg { display: flex; align-items: center; gap: 16px; background: var(--white); border-radius: 16px; padding: 16px 20px; border: 1px solid var(--ink-15); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+.seg-ico { font-size: 22px; flex-shrink: 0; color: var(--secondary); }
+.seg-info { flex: 1; min-width: 0; }
+.seg-name { font-family: 'Outfit', sans-serif; font-size: var(--t-base); font-weight: var(--fw-bold); color: var(--ink); letter-spacing: -0.01em; margin-bottom: 2px; }
+.seg-val { font-size: var(--t-xs); color: var(--ink-55); }
+.seg-track { width: 100px; height: 6px; background: var(--ink-15); border-radius: 99px; overflow: hidden; flex-shrink: 0; }
+.seg-fill { height: 100%; border-radius: 99px; background: var(--primary); }
+.note { font-size: var(--t-sm); color: var(--ink-55); line-height: 1.7; background: var(--primary-pale); padding: 16px 20px; border-radius: 12px; border-left: 4px solid var(--primary); }
+.note strong { font-weight: var(--fw-bold); color: var(--primary); }
+
+.chart-box { background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+.chart-box + .chart-box { margin-top: 20px; }
+.chart-h { font-family: 'Outfit', sans-serif; font-size: var(--t-md); font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 4px; letter-spacing: -0.02em; }
+.chart-s { font-size: var(--t-sm); color: var(--ink-55); margin-bottom: 24px; font-weight: var(--fw-medium); }
+
+/* ══════════════════════════════════════
+   SLIDE 5 — MODEL
+══════════════════════════════════════ */
+.model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.streams { display: flex; flex-direction: column; gap: 16px; }
+.stream {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--white); border: 1px solid var(--ink-15);
+  border-radius: 16px; padding: 20px 24px;
+  transition: all .2s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+.stream:hover { border-color: var(--primary-l); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(77, 176, 125, 0.1); }
+.str-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+.str-name { font-family: 'Outfit', sans-serif; font-size: var(--t-base); font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 4px; letter-spacing: -0.01em; }
+.str-desc { font-size: var(--t-sm); color: var(--ink-55); line-height: 1.6; }
+.str-tag { display: inline-block; font-size: var(--t-xs); font-weight: var(--fw-bold); letter-spacing: 0.05em; padding: 4px 10px; border-radius: var(--radius-card); margin-top: 8px; }
+
+.model-right { display: flex; flex-direction: column; gap: 24px; }
+.econ-card { background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+.econ-title { font-family: 'Outfit', sans-serif; font-size: var(--t-md); font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 20px; }
+.econ-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--ink-15); font-size: var(--t-sm); }
+.econ-row:last-child { border-bottom: none; }
+.econ-k { color: var(--ink-55); font-weight: var(--fw-medium); }
+.econ-v { font-family: 'Outfit', sans-serif; font-weight: var(--fw-bold); font-size: var(--t-base); color: var(--primary); }
+
+.flywheel { background: var(--primary-pale); border: 1px solid rgba(77, 176, 125, 0.2); border-radius: var(--radius-card); padding: 28px; }
+.fw-title { font-family: 'Outfit', sans-serif; font-size: var(--t-md); font-weight: var(--fw-bold); color: var(--primary); margin-bottom: 16px; }
+.fw-steps { display: flex; flex-direction: column; gap: 12px; }
+.fw-step { display: flex; gap: 12px; align-items: center; font-size: var(--t-sm); color: var(--ink-80); font-weight: var(--fw-medium); }
+.fw-n { width: 24px; height: 24px; border-radius: 50%; background: var(--primary); color: var(--white); font-family: 'Outfit', sans-serif; font-size: var(--t-xs); font-weight: var(--fw-bold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+.insight { background: var(--secondary-pale); border: 1px solid rgba(236, 169, 24, 0.2); border-radius: var(--radius-card); padding: 24px; }
+.insight-h { font-family: 'Outfit', sans-serif; font-size: var(--t-base); font-weight: var(--fw-bold); color: var(--secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.insight-b { font-size: var(--t-sm); color: var(--ink-80); line-height: 1.7; font-weight: var(--fw-medium); }
+
+/* ══════════════════════════════════════
+   SLIDE 6 — QUICK COMMERCE
+══════════════════════════════════════ */
+.qc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+.hiw { display: flex; flex-direction: column; background: var(--white); border-radius: var(--radius-card); padding: var(--space-lg) var(--space-xl); border: 1px solid var(--ink-15); box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+.hiw-row { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--ink-15); }
+.hiw-row:last-child { border-bottom: none; }
+.hiw-ico { width: 48px; height: 48px; border-radius: 14px; background: var(--accent-pale); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.hiw-t { font-family: 'Outfit', sans-serif; font-size: var(--t-md); font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 6px; }
+.hiw-d { font-size: var(--t-sm); color: var(--ink-55); line-height: 1.6; }
+
+.warn-note { background: var(--warn-pale); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 16px 20px; margin-top: 24px; display: flex; gap: 12px; align-items: flex-start; }
+.warn-ico { font-size: var(--t-md); flex-shrink: 0; color: var(--warn); }
+.warn-txt { font-size: var(--t-sm); color: #B45309; line-height: 1.6; font-weight: var(--fw-medium); }
+
+.vs-wrap { background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+.vs-h { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 24px; }
+.vs-tbl { width: 100%; border-collapse: collapse; }
+.vs-tbl th { text-align: left; font-size: var(--t-xs); font-weight: var(--fw-bold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-55); padding: 12px; border-bottom: 2px solid var(--ink-15); }
+.vs-tbl td { padding: 14px 12px; border-bottom: 1px solid var(--ink-15); font-size: var(--t-sm); color: var(--ink); font-weight: var(--fw-medium); }
+.vs-tbl tr:last-child td { border-bottom: none; }
+.vs-tbl td:first-child { color: var(--ink-55); }
+.tag-y { display:inline-block; background:var(--accent-pale); color:var(--accent); font-size: var(--t-xs); font-weight:var(--fw-bold); padding:4px 10px; border-radius:20px; }
+.tag-n { display:inline-block; background:var(--secondary-pale); color:var(--secondary); font-size: var(--t-xs); font-weight:var(--fw-bold); padding:4px 10px; border-radius:20px; }
+.tag-p { display:inline-block; background:var(--warn-pale); color:var(--warn); font-size: var(--t-xs); font-weight:var(--fw-bold); padding:4px 10px; border-radius:20px; }
+
+.moat-note { background: linear-gradient(135deg, var(--primary), #0ea5e9); border-radius: 16px; padding: 24px; margin-top: 24px; color: var(--white); box-shadow: 0 10px 20px rgba(77, 176, 125, 0.2); }
+.moat-h { font-family:'Outfit',sans-serif; font-size: var(--t-md); font-weight:var(--fw-bold); margin-bottom:8px; }
+.moat-b { font-size: var(--t-sm); line-height:1.6; font-weight:var(--fw-medium); opacity: 0.9; }
+
+/* ══════════════════════════════════════
+   SLIDE 7 — COMPETITION
+══════════════════════════════════════ */
+.comp-tbl-wrap { background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); overflow: hidden; margin-bottom: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+.comp-tbl { width: 100%; border-collapse: collapse; }
+.comp-tbl th { padding: 20px; font-size: var(--t-sm); font-weight: var(--fw-bold); letter-spacing: 0.08em; text-transform: uppercase; background: var(--bg-alt); border-bottom: 1px solid var(--ink-15); }
+.comp-tbl th:first-child { color: var(--ink-55); text-align: left; }
+.comp-tbl th:nth-child(2) { color: var(--primary); background: var(--primary-pale); }
+.comp-tbl th:not(:first-child) { color: var(--ink-80); text-align: center; }
+.comp-tbl td { padding: 16px 20px; font-size: var(--t-base); font-weight: var(--fw-medium); border-bottom: 1px solid var(--ink-15); }
+.comp-tbl td:first-child { color: var(--ink-80); text-align: left; }
+.comp-tbl td:nth-child(2) { background: rgba(234, 245, 239, 0.3); }
+.comp-tbl td:not(:first-child) { text-align: center; }
+.comp-tbl tr:last-child td { border-bottom: none; }
+.ck { color: var(--accent); font-size: 20px; font-weight: bold; }
+.cx { color: var(--ink-15); font-size: var(--t-md); }
+.cp { color: var(--warn); font-size: var(--t-sm); font-weight: var(--fw-bold); }
+
+.gap-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.gap-card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius-card); padding: var(--space-xl); text-align: center; box-shadow: var(--glass-shadow); }
+.gap-pct { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: 48px; color: var(--secondary); line-height: 1; margin-bottom: 12px; }
+.gap-lbl { font-size: var(--t-sm); color: var(--ink-80); line-height: 1.6; font-weight: var(--fw-medium); }
+
+/* ══════════════════════════════════════
+   SLIDE 8 — GTM
+══════════════════════════════════════ */
+.phases { display: flex; flex-direction: column; gap: 20px; }
+.ph { display: grid; grid-template-columns: 140px 1fr; background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: transform .2s ease; }
+.ph:hover { transform: translateX(5px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+.ph-left { padding: 24px; display: flex; flex-direction: column; justify-content: center; }
+.ph-num { font-size: var(--t-xs); font-weight: var(--fw-bold); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+.ph-time { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: 24px; line-height: 1.15; }
+.ph-right { padding: 24px 32px; border-left: 1px solid var(--ink-15); display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+.ph-targets { display: flex; flex-direction: column; gap: 10px; }
+.ph-t { display: flex; align-items: center; gap: 12px; font-size: var(--t-base); color: var(--ink); font-weight: var(--fw-medium); }
+.ph-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.ph-budget { text-align: right; background: var(--bg-main); padding: 16px 24px; border-radius: 16px; }
+.ph-bval { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: 28px; color: var(--ink); line-height: 1; }
+.ph-blbl { font-size: var(--t-xs); font-weight: var(--fw-bold); color: var(--ink-55); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.ph:nth-child(1) .ph-left { background: var(--primary-pale); }
+.ph:nth-child(1) .ph-num, .ph:nth-child(1) .ph-time { color: var(--primary); }
+.ph:nth-child(2) .ph-left { background: var(--secondary-pale); }
+.ph:nth-child(2) .ph-num, .ph:nth-child(2) .ph-time { color: var(--secondary); }
+.ph:nth-child(3) .ph-left { background: var(--accent-pale); }
+.ph:nth-child(3) .ph-num, .ph:nth-child(3) .ph-time { color: var(--accent); }
+.ph:nth-child(4) .ph-left { background: var(--warn-pale); }
+.ph:nth-child(4) .ph-num, .ph:nth-child(4) .ph-time { color: var(--warn); }
+
+/* ══════════════════════════════════════
+   SLIDE 9 — FINANCIALS
+══════════════════════════════════════ */
+.fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.fin-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.kpi { background: var(--white); border: 1px solid var(--ink-15); border-radius: 16px; padding: 20px 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+.kpi-val { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: 32px; color: var(--primary); line-height: 1; margin-bottom: 8px; }
+.kpi-lbl { font-size: var(--t-sm); color: var(--ink-55); font-weight: var(--fw-medium); line-height: 1.4; }
+
+.fin-card { background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+.fin-card + .fin-card { margin-top: 20px; }
+.fin-h { font-family: 'Outfit', sans-serif; font-size: var(--t-md); font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 20px; }
+
+.f-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--ink-15); font-size: var(--t-sm); }
+.f-row:last-child { border-bottom: none; padding-top: 16px; border-top: 2px solid var(--ink-15); }
+.f-k { color: var(--ink-80); display: flex; align-items: center; gap: 10px; font-weight: var(--fw-medium); }
+.f-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.f-v { font-family: 'Outfit', sans-serif; font-weight: var(--fw-bold); font-size: var(--t-base); color: var(--ink); }
+.f-pct { font-size: var(--t-xs); color: var(--ink-55); margin-left: 8px; font-weight: var(--fw-semi); }
+
+/* ══════════════════════════════════════
+   SLIDE 10 — TEAM
+══════════════════════════════════════ */
+.team-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+.t-card { background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); padding: var(--space-xl); display: flex; flex-direction: column; gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: transform .3s; }
+.t-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); }
+.t-avi { width: 64px; height: 64px; border-radius: 16px; color: var(--white); font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: 24px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+.t-name { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: 24px; color: var(--ink); margin-bottom: 4px; }
+.t-role { font-size: var(--t-sm); font-weight: var(--fw-bold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); }
+.t-bio { font-size: var(--t-base); color: var(--ink-55); line-height: 1.6; font-weight: var(--fw-medium); }
+.t-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+.t-tag { font-size: var(--t-xs); font-weight: var(--fw-bold); color: var(--primary); background: var(--primary-pale); padding: 6px 14px; border-radius: var(--radius-card); }
+
+.ask-block { background: linear-gradient(135deg, var(--primary), #0ea5e9); border-radius: 24px; padding: 40px 48px; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; color: var(--white); box-shadow: 0 15px 40px rgba(77, 176, 125, 0.3); }
+.ask-lbl { font-size: var(--t-sm); font-weight: var(--fw-bold); letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 8px; }
+.ask-amt { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: 56px; color: var(--white); line-height: 1; margin-bottom: 16px; }
+.ask-desc { font-size: var(--t-base); color: rgba(255,255,255,0.9); line-height: 1.6; max-width: 460px; font-weight: var(--fw-medium); }
+.ask-uses { display: flex; flex-direction: column; gap: 14px; }
+.ask-use { display: flex; align-items: center; gap: 14px; font-size: var(--t-base); font-weight: var(--fw-bold); color: var(--white); white-space: nowrap; }
+.use-bar { width: 100px; height: 8px; background: rgba(0,0,0,0.2); border-radius: 99px; overflow: hidden; }
+.use-fill { height: 100%; border-radius: 99px; background: var(--white); }
+
+/* ══════════════════════════════════════
+   SLIDE 11 — CLOSE
+══════════════════════════════════════ */
+.close-wrap { max-width: 700px; margin: 0 auto; text-align: center; padding: 60px 0; }
+.close-ico { font-size: 56px; margin-bottom: 24px; color: var(--primary); }
+.close-ico svg { fill: var(--primary); }
+.close-title { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: clamp(40px, 5vw, 64px); line-height: 1.1; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 24px; }
+.close-title .g { color: var(--secondary); }
+.close-sub { font-size: var(--t-lg); color: var(--ink-55); line-height: 1.7; margin-bottom: 48px; font-weight: var(--fw-medium); }
+
+.contacts { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-bottom: 48px; }
+.c-card { background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); padding: 24px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: transform .3s; }
+.c-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); }
+.c-ico { font-size: 24px; margin-bottom: 12px; color: var(--primary); }
+.c-lbl { font-size: var(--t-xs); font-weight: var(--fw-bold); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-55); margin-bottom: 6px; }
+.c-val { font-size: var(--t-base); color: var(--ink); font-weight: var(--fw-bold); word-break: break-all; }
+
+.close-pills { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.c-pill { border-radius: var(--radius-card); padding: 20px 28px; text-align: center; background: var(--white); box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid var(--ink-15); }
+.c-pill-val { font-family: 'Outfit', sans-serif; font-weight: var(--fw-black); font-size: 28px; line-height: 1; margin-bottom: 6px; }
+.c-pill-lbl { font-size: var(--t-sm); color: var(--ink-55); font-weight: var(--fw-medium); }
+
+/* ══════ RESPONSIVE ══════ */
+@media (max-width: 860px) {
+  .hero-layout, .sol-grid, .qc-grid, .mkt-grid, .model-grid, .fin-grid, .team-row, .ask-block { grid-template-columns: 1fr; }
+  .problem-grid, .gap-row, .contacts, .close-pills, .stat-row { grid-template-columns: 1fr; }
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .slide { padding: calc(var(--nav-h) + 40px) 24px 60px; }
+  .ph { grid-template-columns: 1fr; }
+  .ph-right { grid-template-columns: 1fr; }
+}
+
+
+/* ─── NEW: PRODUCT SNEAK PEEK ─── */
+.prod-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; }
+.prod-mock { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius-card); padding: 24px; box-shadow: var(--glass-shadow); }
+.mock-hdr { font-family: 'Outfit', sans-serif; font-size: var(--t-base); font-weight: var(--fw-bold); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+.mock-frame.phone { width: 100%; max-width: 280px; margin: 0 auto; aspect-ratio: 9/19; background: var(--white); border-radius: 36px; border: 8px solid var(--ink); position: relative; overflow: hidden; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+.m-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40%; height: 24px; background: var(--ink); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; z-index: 10; }
+.m-app { padding: 40px 16px 20px; height: 100%; display: flex; flex-direction: column; gap: 12px; background: #F8FAFC; }
+.m-nav { font-family: 'Outfit', sans-serif; font-size: var(--t-md); font-weight: var(--fw-black); color: var(--ink); text-align: center; }
+.m-search { background: var(--white); border-radius: 99px; padding: 10px 16px; font-size: var(--t-xs); color: var(--ink-15); box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+.m-card { background: var(--white); border-radius: 12px; padding: 10px; display: flex; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+.m-img { width: 50px; height: 50px; background: var(--ink-15); border-radius: 8px; }
+.m-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.m-title { font-size: var(--t-xs); font-weight: var(--fw-bold); color: var(--ink); }
+.m-badge { font-size: 9px; color: var(--primary); font-weight: var(--fw-bold); display: flex; align-items: center; gap: 4px; background: var(--primary-pale); padding: 2px 6px; border-radius: 4px; width: fit-content; }
+.m-price { font-size: var(--t-xs); font-weight: var(--fw-black); color: var(--ink-80); margin-top: auto; }
+
+.mock-frame.desktop { width: 100%; aspect-ratio: 16/10; background: var(--white); border-radius: 16px; border: 4px solid var(--ink-15); display: flex; flex-direction: column; overflow: hidden; }
+.m-desk-nav { height: 24px; background: var(--ink-15); display: flex; align-items: center; padding: 0 12px; }
+.m-dots { display: flex; gap: 6px; }
+.m-dot { width: 10px; height: 10px; border-radius: 50%; }
+.m-dot.r { background: #F43F5E; } .m-dot.y { background: #F59E0B; } .m-dot.g { background: #10B981; }
+.m-desk-app { display: flex; flex: 1; }
+.m-sidebar { width: 60px; background: #F8FAFC; border-right: 1px solid var(--ink-15); padding: 16px 0; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.m-sb-item { width: 28px; height: 28px; border-radius: 8px; background: var(--ink-15); }
+.m-sb-item.active { background: var(--primary); }
+.m-main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.m-hdr { font-family: 'Outfit', sans-serif; font-size: var(--t-base); font-weight: var(--fw-bold); }
+.m-stats { display: flex; gap: 12px; }
+.m-stat-box { flex: 1; background: var(--secondary-pale); border: 1px dashed var(--secondary); border-radius: 8px; padding: 12px; font-size: var(--t-xs); font-weight: var(--fw-bold); color: var(--secondary); }
+.m-table { display: flex; flex-direction: column; gap: 8px; }
+.m-tr { display: flex; gap: 12px; background: #F8FAFC; padding: 10px; border-radius: 8px; }
+.m-td { height: 8px; border-radius: 4px; background: var(--ink-15); }
+.m-td.lg { width: 40%; } .m-td.sm { width: 20%; } .m-td.badge { width: 15%; background: var(--primary); margin-left: auto; }
+
+/* ─── NEW: TRACTION & WHY NOW ─── */
+.trac-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.trac-h { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: var(--fw-bold); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+.catalysts { display: flex; flex-direction: column; gap: 16px; }
+.cat-card { display: flex; gap: 16px; background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); padding: var(--space-lg); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+.cat-ico { width: 48px; height: 48px; border-radius: 12px; background: var(--warn-pale); color: var(--warn); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cat-title { font-family: 'Outfit', sans-serif; font-size: var(--t-base); font-weight: var(--fw-bold); margin-bottom: 6px; }
+.cat-desc { font-size: var(--t-sm); color: var(--ink-55); line-height: 1.6; }
+.trac-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.t-stat { background: var(--primary-pale); border: 1px solid rgba(77, 176, 125, 0.2); border-radius: 16px; padding: 24px; text-align: center; }
+.t-val { font-family: 'Outfit', sans-serif; font-size: 36px; font-weight: var(--fw-black); color: var(--primary); line-height: 1; margin-bottom: 8px; }
+.t-lbl { font-size: var(--t-xs); font-weight: var(--fw-bold); color: var(--ink-80); line-height: 1.4; }
+
+/* ─── NEW: UNIT ECONOMICS ─── */
+.econ-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.ue-card { background: var(--white); border: 1px solid var(--ink-15); border-radius: var(--radius-card); padding: var(--space-xl); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+.ue-hdr { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: var(--fw-bold); margin-bottom: 24px; color: var(--ink); border-bottom: 2px solid var(--primary); padding-bottom: 12px; display: inline-block; }
+.ue-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px dashed var(--ink-15); font-size: var(--t-base); }
+.ue-row.highlight { background: var(--primary-pale); margin: 12px -32px 0; padding: 20px 32px; border-bottom: none; border-top: 1px solid rgba(77, 176, 125, 0.2); }
+.ue-row.highlight .ue-v { color: var(--primary); font-size: 24px; }
+.ue-k { color: var(--ink-80); font-weight: var(--fw-medium); }
+.ue-v { font-family: 'Outfit', sans-serif; font-weight: var(--fw-bold); color: var(--ink); }
+.ue-ratio { font-size: var(--t-sm); font-weight: var(--fw-bold); letter-spacing: 0.1em; text-transform: uppercase; color: var(--secondary); margin-top: 20px; text-align: center; background: var(--secondary-pale); padding: 12px; border-radius: 12px; }
+
+@media (max-width: 860px) {
+  .prod-grid, .trac-grid, .econ-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ─── NEW: TAM SAM SOM ─── */
+.tss-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; align-items: flex-end; }
+.tss-item { border-radius: 16px; padding: 24px; color: var(--white); box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left; transition: transform .3s; }
+.tss-item:hover { transform: translateX(-5px); }
+.tss-item.tam { background: linear-gradient(135deg, var(--ink-55), var(--ink-80)); width: 100%; }
+.tss-item.sam { background: linear-gradient(135deg, var(--secondary), #ECA918); width: 85%; }
+.tss-item.som { background: linear-gradient(135deg, var(--primary), #0ea5e9); width: 70%; }
+.tss-lbl { font-size: var(--t-sm); font-weight: var(--fw-black); letter-spacing: 0.05em; margin-bottom: 8px; text-transform: uppercase; }
+.tss-lbl span { font-weight: var(--fw-medium); font-size: var(--t-xs); opacity: 0.8; margin-left: 6px; text-transform: none; }
+.tss-val { font-family: 'Outfit', sans-serif; font-size: 48px; font-weight: var(--fw-black); line-height: 1; margin-bottom: 8px; }
+.tss-desc { font-size: var(--t-sm); font-weight: var(--fw-medium); opacity: 0.9; }
+
+/* ─── NEW: INTERACTIVE MAP ─── */
+.gtm-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; }
+.map-wrap { background: var(--white); border-radius: var(--radius-card); border: 1px solid var(--ink-15); box-shadow: 0 10px 30px rgba(0,0,0,0.03); padding: 24px; position: relative; }
+.map-title { font-family: 'Outfit', sans-serif; font-size: var(--t-base); font-weight: var(--fw-bold); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+.map-container { position: relative; width: 100%; aspect-ratio: 4/5; background: var(--primary-pale); border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(77, 176, 125, 0.2); }
+.map-node { position: absolute; z-index: 10; cursor: pointer; }
+.m-pulse { width: 16px; height: 16px; background: var(--primary); border-radius: 50%; position: relative; box-shadow: 0 0 10px var(--primary); }
+.m-pulse::after { content:''; position:absolute; top:-4px; left:-4px; right:-4px; bottom:-4px; border-radius:50%; border: 2px solid var(--primary); animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
+.m-tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-10px); background: var(--white); padding: 16px; border-radius: 12px; border: 1px solid var(--ink-15); box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 220px; opacity: 0; pointer-events: none; transition: all .3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 20; }
+.m-tooltip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border-width: 6px; border-style: solid; border-color: var(--white) transparent transparent transparent; }
+.map-node:hover .m-tooltip { opacity: 1; transform: translateX(-50%) translateY(-20px); pointer-events: auto; }
+.t-hdr { font-family: 'Outfit', sans-serif; font-size: var(--t-sm); font-weight: var(--fw-bold); color: var(--ink); margin-bottom: 8px; border-bottom: 1px solid var(--ink-15); padding-bottom: 8px; }
+.t-stat { font-size: var(--t-xs); font-weight: var(--fw-medium); color: var(--ink-80); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.t-stat::before { content:''; display:block; width:4px; height:4px; border-radius:50%; background:var(--primary); }
+
+</style>
+</head>
+<body>
+
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="var(--primary)"><path d="M3 4H21L14 12.5V20.5L10 18.5V12.5L3 4Z" /></svg> Mera<span>Filter</span></div>
+  <div class="nav-links">
+    <button class="nav-link" onclick="goTo('s-hero')">Overview</button>
+    <button class="nav-link" onclick="goTo('s-problem')">Problem</button>
+    <button class="nav-link" onclick="goTo('s-solution')">Solution</button>
+        <button class="nav-link" onclick="goTo('s-product')">Product</button>
+    <button class="nav-link" onclick="goTo('s-market')">Market</button>
+        <button class="nav-link" onclick="goTo('s-traction')">Traction</button>
+    <button class="nav-link" onclick="goTo('s-model')">Model</button>
+    <button class="nav-link" onclick="goTo('s-commerce')">Commerce</button>
+    <button class="nav-link" onclick="goTo('s-competition')">Competition</button>
+    <button class="nav-link" onclick="goTo('s-gtm')">GTM</button>
+        <button class="nav-link" onclick="goTo('s-economics')">Economics</button>
+    <button class="nav-link" onclick="goTo('s-financials')">Financials</button>
+    <button class="nav-link" onclick="goTo('s-team')">Team</button>
+  </div>
+  <div class="nav-badge">SEED · $110K</div>
+</nav>
+
+<!-- ═══ S1 HERO ═══ -->
+<section class="slide" id="s-hero">
+  <div class="slide-inner">
+    <div class="hero-layout">
+      <div class="reveal">
+        <div class="hero-pill"><span class="blink"></span>India's Trust Layer for Consumer Products</div>
+        <h1 class="hero-title">
+          Redefining Product<br>
+          <span class="g">Safety</span> &amp;<br>
+          <span class="y">Consumer Trust</span>
+        </h1>
+        <p class="hero-desc">Mera Filter connects certified labs, product owners, retailers, and consumers — India's first end-to-end marketplace where every product is lab-verified before it reaches your hands.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="goTo('s-problem')">View Pitch →</button>
+          <button class="btn-ghost" onclick="goTo('s-team')">Meet the team ↓</button>
+        </div>
+        <div class="hero-stats">
+          <div class="h-stat">
+            <div class="h-stat-val">$20<sup>B</sup></div>
+            <div class="h-stat-lbl">Global testing market today</div>
+          </div>
+          <div class="h-stat">
+            <div class="h-stat-val">80%</div>
+            <div class="h-stat-lbl">Labs are B2B only — no consumer layer</div>
+          </div>
+          <div class="h-stat">
+            <div class="h-stat-val">50K<sup>+</sup></div>
+            <div class="h-stat-lbl">Indian SMEs need lab testing annually</div>
+          </div>
+          <div class="h-stat">
+            <div class="h-stat-val">100M<sup>+</sup></div>
+            <div class="h-stat-lbl">Consumers want verified products online</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:.2s">
+        <div class="hero-diagram">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="d-center">
+            <span class="d-center-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="var(--primary)"><path d="M3 4H21L14 12.5V20.5L10 18.5V12.5L3 4Z" /></svg></span>
+          </div>
+          <div class="d-node"><span class="d-node-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg></span><span class="d-node-lbl">BRANDS</span></div>
+          <div class="d-node"><span class="d-node-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><path d="M5.52 16h12.96"/></svg></span><span class="d-node-lbl">LABS</span></div>
+          <div class="d-node"><span class="d-node-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span><span class="d-node-lbl">RETAIL</span></div>
+          <div class="d-node"><span class="d-node-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span class="d-node-lbl">BUYERS</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S2 PROBLEM ═══ -->
+<section class="slide" id="s-problem">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label">The Problem</p>
+      <h2 class="sec-title">Trust is broken across the entire supply chain</h2>
+      <p class="sec-sub">Three critical user groups suffer from India's fragmented, opacity-ridden product verification ecosystem.</p>
+    </div>
+    <div class="problem-grid reveal" style="transition-delay:.15s">
+      <div class="p-card">
+        <p class="p-who">Target User 01</p>
+        <span class="p-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg></span>
+        <h3 class="p-name">Product Owners &amp; Brands</h3>
+        <ul class="p-list">
+          <li>No affordable, accessible lab testing marketplace</li>
+          <li>Cannot gather authentic pre-launch consumer feedback</li>
+          <li>Compliance costs prohibitively high for SMEs</li>
+          <li>Difficult to build trust signals for products</li>
+        </ul>
+      </div>
+      <div class="p-card">
+        <p class="p-who">Target User 02</p>
+        <span class="p-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+        <h3 class="p-name">Consumers</h3>
+        <ul class="p-list">
+          <li>No way to verify product quality or authenticity</li>
+          <li>Food adulteration affects 1 in 5 packaged goods</li>
+          <li>Zero traceability from factory to shelf</li>
+          <li>Cannot find verified products from nearby stores</li>
+        </ul>
+      </div>
+      <div class="p-card">
+        <p class="p-who">Target User 03</p>
+        <span class="p-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><path d="M5.52 16h12.96"/></svg></span>
+        <h3 class="p-name">Certified Laboratories</h3>
+        <ul class="p-list">
+          <li>No central discovery platform — invisible to brands</li>
+          <li>Rely entirely on offline referrals for business</li>
+          <li>No digital tools for order management</li>
+          <li>Massive underutilization of testing capacity</li>
+        </ul>
+      </div>
+    </div>
+    <div class="stat-row reveal" style="transition-delay:.3s">
+      <div class="s-item">
+        <div class="s-val">20%</div>
+        <div class="s-lbl">of testing services offer end-to-end solutions</div>
+      </div>
+      <div class="s-item">
+        <div class="s-val">80%</div>
+        <div class="s-lbl">of labs are pure B2B with zero consumer engagement</div>
+      </div>
+      <div class="s-item">
+        <div class="s-val">&lt;15%</div>
+        <div class="s-lbl">of platforms integrate multi-category testing</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S3 SOLUTION ═══ -->
+<section class="slide" id="s-solution">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label light">Our Solution</p>
+      <h2 class="sec-title light">One platform. Every link in the chain.</h2>
+      <p class="sec-sub light">Mera Filter is India's first four-sided marketplace connecting labs, brands, retailers, and consumers through lab-verification as the trust layer.</p>
+    </div>
+    <div class="sol-grid">
+      <div class="sol-steps reveal" style="transition-delay:.15s">
+        <div class="sol-step">
+          <div class="sn">1</div>
+          <div>
+            <div class="sn-title">Labs list &amp; get discovered</div>
+            <div class="sn-desc">NABL/FSSAI labs list capabilities, pricing, and turnaround time. Brands discover and book tests directly through the platform.</div>
+          </div>
+        </div>
+        <div class="sol-step">
+          <div class="sn">2</div>
+          <div>
+            <div class="sn-title">Brands get products tested</div>
+            <div class="sn-desc">Book tests, track progress, receive digital certificates. The "Mera Filter Verified" badge is earned — not purchased.</div>
+          </div>
+        </div>
+        <div class="sol-step">
+          <div class="sn">3</div>
+          <div>
+            <div class="sn-title">Retailers list verified inventory</div>
+            <div class="sn-desc">Only lab-verified products can be listed. Local stores gain a new digital sales channel with a built-in trust layer.</div>
+          </div>
+        </div>
+        <div class="sol-step">
+          <div class="sn">4</div>
+          <div>
+            <div class="sn-title">Consumers buy with confidence</div>
+            <div class="sn-desc">Order verified products from nearby stores. Every item carries a QR-linked lab certificate traceable to its test date.</div>
+          </div>
+        </div>
+      </div>
+      <div class="features reveal" style="transition-delay:.3s">
+        <div class="feat">
+          <div class="feat-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></div>
+          <div>
+            <div class="feat-name">Mera Filter Verified Badge</div>
+            <div class="feat-desc">QR-linked digital certificate on every verified product, traceable to the issuing lab and test parameters.</div>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div>
+          <div>
+            <div class="feat-name">Quick Commerce Delivery</div>
+            <div class="feat-desc">Hyperlocal delivery from nearby registered retailers. Only lab-verified items can be listed — no exceptions.</div>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico">🧑‍<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4H21L14 12.5V20.5L10 18.5V12.5L3 4Z" /></svg></div>
+          <div>
+            <div class="feat-name">Pre-Launch Testing Panels</div>
+            <div class="feat-desc">Brands send new products to a curated consumer panel before launch. Real feedback from real buyers.</div>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></div>
+          <div>
+            <div class="feat-name">Lab SaaS Order Management</div>
+            <div class="feat-desc">Free digital tools for labs: order tracking, certificate issuance, client communication, and analytics dashboard.</div>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div>
+            <div class="feat-name">Hyperlocal Retailer Discovery</div>
+            <div class="feat-desc">Consumers see verified products available within 2–5 km, with real-time stock from registered local stores.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ S3.5 PRODUCT ═══ -->
+<section class="slide" id="s-product">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label">The Product</p>
+      <h2 class="sec-title">A seamless experience for every user</h2>
+      <p class="sec-sub">Purpose-built interfaces driving adoption across the entire supply chain.</p>
+    </div>
+    <div class="prod-grid reveal" style="transition-delay:.15s">
+      <div class="prod-mock">
+        <div class="mock-hdr">Consumer App <span class="tag-y">Live Demo</span></div>
+        <div class="mock-frame phone">
+          <div class="m-notch"></div>
+          <div class="m-app">
+            <div class="m-nav">Mera<span style="color:var(--primary)">Filter</span></div>
+            <div class="m-search">Search verified products...</div>
+            <div class="m-card">
+              <div class="m-img" style="background:var(--primary-pale)"></div>
+              <div class="m-info">
+                <div class="m-title">Organic Honey 500g</div>
+                <div class="m-badge"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg> Lab Verified</div>
+                <div class="m-price">₹450</div>
+              </div>
+            </div>
+            <div class="m-card">
+              <div class="m-img" style="background:var(--secondary-pale)"></div>
+              <div class="m-info">
+                <div class="m-title">Almond Milk 1L</div>
+                <div class="m-badge"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg> Lab Verified</div>
+                <div class="m-price">₹220</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="prod-mock">
+         <div class="mock-hdr">Brand / Lab Dashboard <span class="tag-n">Beta</span></div>
+         <div class="mock-frame desktop">
+           <div class="m-desk-nav">
+             <div class="m-dots"><div class="m-dot r"></div><div class="m-dot y"></div><div class="m-dot g"></div></div>
+           </div>
+           <div class="m-desk-app">
+             <div class="m-sidebar">
+               <div class="m-sb-item active"></div>
+               <div class="m-sb-item"></div>
+               <div class="m-sb-item"></div>
+             </div>
+             <div class="m-main">
+               <div class="m-hdr">Testing Orders</div>
+               <div class="m-stats">
+                 <div class="m-stat-box" style="background:var(--warn-pale); border-color:var(--warn); color:var(--warn);">Pending: 12</div>
+                 <div class="m-stat-box" style="background:var(--primary-pale); border-color:var(--primary); color:var(--primary);">Completed: 84</div>
+               </div>
+               <div class="m-table">
+                 <div class="m-tr"><div class="m-td lg"></div><div class="m-td sm"></div><div class="m-td badge"></div></div>
+                 <div class="m-tr"><div class="m-td lg"></div><div class="m-td sm"></div><div class="m-td badge"></div></div>
+                 <div class="m-tr"><div class="m-td lg"></div><div class="m-td sm"></div><div class="m-td badge" style="background:var(--warn)"></div></div>
+               </div>
+             </div>
+           </div>
+         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S4 MARKET ═══ -->
+<section class="slide" id="s-market">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label">Market Opportunity</p>
+    </div>
+    <div class="mkt-grid">
+      <div class="reveal">
+        <div class="tss-wrap">
+          <div class="tss-item tam">
+            <div class="tss-lbl">TAM <span>Total Addressable Market</span></div>
+            <div class="tss-val">$20B</div>
+            <div class="tss-desc">Global Product Verification &amp; Testing</div>
+          </div>
+          <div class="tss-item sam">
+            <div class="tss-lbl">SAM <span>Serviceable Addressable Market</span></div>
+            <div class="tss-val">$5.5B</div>
+            <div class="tss-desc">India Quick Commerce &amp; FMCG Verification</div>
+          </div>
+          <div class="tss-item som">
+            <div class="tss-lbl">SOM <span>Serviceable Obtainable Market</span></div>
+            <div class="tss-val">$100M</div>
+            <div class="tss-desc">Initial Penetration (Hyderabad &amp; Bengaluru)</div>
+          </div>
+        </div>
+        <p class="note">India's FMCG market projected at <strong>$15 trillion by 2025</strong>. Post-pandemic consumer focus on health &amp; safety has surged — creating unprecedented demand for product verification at the point of purchase.</p>
+      </div>
+      <div class="reveal" style="transition-delay:.2s">
+        <div class="chart-box">
+          <div class="chart-h">Global Testing Market Growth</div>
+          <div class="chart-s">Market size in $B · 2023–2030 · 7% CAGR</div>
+          <div style="position:relative;height:200px;"><canvas id="mktChart"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-h">India Target Market Potential</div>
+          <div class="chart-s">Projected users by segment · 2023–2028</div>
+          <div style="position:relative;height:185px;"><canvas id="segChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S5 BUSINESS MODEL ═══ -->
+<section class="slide" id="s-model">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label light">Business Model</p>
+      <h2 class="sec-title light">Seven revenue streams. One flywheel.</h2>
+      <p class="sec-sub light">Multi-sided model where each layer reinforces the others — testing feeds retail, retail feeds GMV, GMV attracts more brands.</p>
+    </div>
+    <div class="model-grid">
+      <div class="streams reveal" style="transition-delay:.15s">
+        <div class="stream">
+          <div class="str-dot" style="background:#2EBE72;margin-top:4px"></div>
+          <div>
+            <div class="str-name">Lab Testing Commission</div>
+            <div class="str-desc">10–12% on each test order routed between brands and labs.</div>
+            <span class="str-tag" style="background:rgba(46,190,114,0.12);color:#2EBE72;">CORE · HIGH MARGIN</span>
+          </div>
+        </div>
+        <div class="stream">
+          <div class="str-dot" style="background:#60A5FA;margin-top:4px"></div>
+          <div>
+            <div class="str-name">Subscription Plans</div>
+            <div class="str-desc">Labs ₹999–₹2,499/mo · Brands ₹1,499/mo · Retailers ₹499/mo.</div>
+            <span class="str-tag" style="background:rgba(96,165,250,0.12);color:#60A5FA;">RECURRING MRR</span>
+          </div>
+        </div>
+        <div class="stream">
+          <div class="str-dot" style="background:#E8B84B;margin-top:4px"></div>
+          <div>
+            <div class="str-name">Quick Commerce Order Commission</div>
+            <div class="str-desc">10–15% on every consumer order fulfilled through a verified nearby retailer.</div>
+            <span class="str-tag" style="background:rgba(232,184,75,0.12);color:#B8860B;">GMV-LINKED · SCALES</span>
+          </div>
+        </div>
+        <div class="stream">
+          <div class="str-dot" style="background:#F97316;margin-top:4px"></div>
+          <div>
+            <div class="str-name">Retailer Onboarding Fee</div>
+            <div class="str-desc">₹1,000–₹2,000 one-time fee + ₹499/mo listing subscription.</div>
+            <span class="str-tag" style="background:rgba(249,115,22,0.12);color:#F97316;">UPFRONT REVENUE</span>
+          </div>
+        </div>
+        <div class="stream">
+          <div class="str-dot" style="background:#A78BFA;margin-top:4px"></div>
+          <div>
+            <div class="str-name">Sponsored Placements</div>
+            <div class="str-desc">Verified brands pay for priority placement in search and category pages.</div>
+            <span class="str-tag" style="background:rgba(167,139,250,0.12);color:#A78BFA;">AD-LIKE REVENUE</span>
+          </div>
+        </div>
+        <div class="stream">
+          <div class="str-dot" style="background:#34D399;margin-top:4px"></div>
+          <div>
+            <div class="str-name">Pre-Launch Consumer Testing Panel</div>
+            <div class="str-desc">Brands pay per cycle to send products to a curated buyer panel pre-launch.</div>
+            <span class="str-tag" style="background:rgba(52,211,153,0.12);color:#34D399;">UNIQUE · DEFENSIBLE</span>
+          </div>
+        </div>
+      </div>
+      <div class="model-right reveal" style="transition-delay:.3s">
+        <div class="econ-card">
+          <div class="econ-title">Key Unit Economics</div>
+          <div class="econ-row"><span class="econ-k">Avg. revenue per test order</span><span class="econ-v">₹800–₹2,400</span></div>
+          <div class="econ-row"><span class="econ-k">Avg. consumer order value</span><span class="econ-v">₹350–₹600</span></div>
+          <div class="econ-row"><span class="econ-k">Take rate on commerce GMV</span><span class="econ-v">10–15%</span></div>
+          <div class="econ-row"><span class="econ-k">CAC — Labs</span><span class="econ-v">₹1,200</span></div>
+          <div class="econ-row"><span class="econ-k">CAC — Brands</span><span class="econ-v">₹2,500</span></div>
+          <div class="econ-row"><span class="econ-k">CAC — Consumers</span><span class="econ-v">₹180</span></div>
+          <div class="econ-row"><span class="econ-k">LTV : CAC target ratio</span><span class="econ-v">4.5×</span></div>
+          <div class="econ-row"><span class="econ-k">Gross margin — testing stream</span><span class="econ-v">72–78%</span></div>
+        </div>
+        <div class="flywheel">
+          <div class="fw-title">The Reinforcing Flywheel</div>
+          <div class="fw-steps">
+            <div class="fw-step"><div class="fw-n">1</div>Labs onboard → testing supply created</div>
+            <div class="fw-step"><div class="fw-n">2</div>Brands test → verified product catalog grows</div>
+            <div class="fw-step"><div class="fw-n">3</div>Retailers list verified inventory → local coverage</div>
+            <div class="fw-step"><div class="fw-n">4</div>Consumers order → GMV generates commission</div>
+            <div class="fw-step"><div class="fw-n">5</div>Higher GMV → more brands want verification ↩ 2</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="insight-h"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Key Investor Insight</div>
+          <div class="insight-b">The B2B testing business and B2C quick-commerce business are not separate bets — they are the same flywheel. The testing side funds acquisition; the commerce side drives scale.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S6 QUICK COMMERCE ═══ -->
+<section class="slide" id="s-commerce">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label">Quick Commerce Layer</p>
+      <h2 class="sec-title">Zepto for safety-conscious consumers</h2>
+      <p class="sec-sub">India's first hyperlocal delivery platform where every product must pass lab verification to be listed. Trust is the entry ticket — not optional.</p>
+    </div>
+    <div class="qc-grid">
+      <div class="reveal" style="transition-delay:.15s">
+        <div class="hiw">
+          <div class="hiw-row">
+            <div class="hiw-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></svg></div>
+            <div>
+              <div class="hiw-t">Retailers onboard &amp; list inventory</div>
+              <div class="hiw-d">Kirana stores and pharmacies list only lab-verified products. One-time product source verification required before listing.</div>
+            </div>
+          </div>
+          <div class="hiw-row">
+            <div class="hiw-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+            <div>
+              <div class="hiw-t">Consumer discovers nearby</div>
+              <div class="hiw-d">App shows verified products within 2–5 km, filterable by category, verified status, and store rating.</div>
+            </div>
+          </div>
+          <div class="hiw-row">
+            <div class="hiw-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></div>
+            <div>
+              <div class="hiw-t">Order placed &amp; delivered</div>
+              <div class="hiw-d">Retailer fulfills via Shadowfax/Porter integration (Phase 2) or own staff. Click-and-collect also supported.</div>
+            </div>
+          </div>
+          <div class="hiw-row">
+            <div class="hiw-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></div>
+            <div>
+              <div class="hiw-t">Certificate traceable on delivery</div>
+              <div class="hiw-d">Every package has a QR-linked lab certificate. Consumer can verify the test date, issuing lab, and parameters.</div>
+            </div>
+          </div>
+        </div>
+        <div class="warn-note">
+          <span class="warn-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          <div class="warn-txt"><strong>Phased delivery approach:</strong> Phase 1 uses retailer's own delivery or click-and-collect. Phase 2 integrates third-party logistics API. Own fleet is post-Series A — keeping the model asset-light at launch.</div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:.3s">
+        <div class="vs-wrap">
+          <div class="vs-h">Mera Filter vs. Quick Commerce Players</div>
+          <table class="vs-tbl">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Mera Filter</th>
+                <th>Zepto/Blinkit</th>
+                <th>Amazon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Lab-verified products</td><td><span class="tag-y">✓ All products</span></td><td><span class="tag-n">✗ None</span></td><td><span class="tag-n">✗ None</span></td></tr>
+              <tr><td>Verified badge &amp; QR cert</td><td><span class="tag-y">✓ Every item</span></td><td><span class="tag-n">✗ Not offered</span></td><td><span class="tag-n">✗ Not offered</span></td></tr>
+              <tr><td>Pre-launch testing panel</td><td><span class="tag-y">✓ Unique</span></td><td><span class="tag-n">✗ None</span></td><td><span class="tag-n">✗ None</span></td></tr>
+              <tr><td>Capital model</td><td><span class="tag-y">Asset-light</span></td><td><span class="tag-n">Dark stores</span></td><td><span class="tag-n">Warehouses</span></td></tr>
+              <tr><td>Kirana/nearby retailer network</td><td><span class="tag-y">✓ Kirana-first</span></td><td><span class="tag-p">Dark stores only</span></td><td><span class="tag-n">Warehouse-only</span></td></tr>
+              <tr><td>Trust differentiation</td><td><span class="tag-y">Safety-first</span></td><td><span class="tag-p">Speed-first</span></td><td><span class="tag-p">Price-first</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="moat-note">
+          <div class="moat-h">Why Zepto cannot replicate this</div>
+          <div class="moat-b">Lab verification for every listed product adds cost and complexity that dark-store players have no incentive to absorb. Their margin model runs on volume and speed. Mera Filter's margin model runs on trust — a fundamentally different and defensible competitive position.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S7 COMPETITION ═══ -->
+<section class="slide" id="s-competition">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label light">Competitive Landscape</p>
+      <h2 class="sec-title light">Nobody is doing what we're doing.</h2>
+      <p class="sec-sub light">Existing players are either pure B2B testing labs or pure marketplaces. None bridge the gap between the two.</p>
+    </div>
+    <div class="comp-tbl-wrap reveal" style="transition-delay:.15s">
+      <table class="comp-tbl">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4H21L14 12.5V20.5L10 18.5V12.5L3 4Z" /></svg> Mera Filter</th>
+            <th>Equinox / ITC Labs</th>
+            <th>Amazon / Flipkart</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>End-to-end verified marketplace</td><td><span class="ck">✓</span></td><td><span class="cx">✗</span></td><td><span class="cx">✗</span></td></tr>
+          <tr><td>Lab discovery &amp; booking</td><td><span class="ck">✓</span></td><td><span class="cp">Partial</span></td><td><span class="cx">✗</span></td></tr>
+          <tr><td>Consumer-facing verified products</td><td><span class="ck">✓</span></td><td><span class="cx">✗</span></td><td><span class="cx">✗</span></td></tr>
+          <tr><td>Pre-launch consumer testing panel</td><td><span class="ck">✓</span></td><td><span class="cx">✗</span></td><td><span class="cx">✗</span></td></tr>
+          <tr><td>Hyperlocal quick commerce</td><td><span class="ck">✓</span></td><td><span class="cx">✗</span></td><td><span class="cp">Partial</span></td></tr>
+          <tr><td>Multi-category (grocery → pharma)</td><td><span class="ck">✓</span></td><td><span class="cp">Partial</span></td><td><span class="ck">✓</span></td></tr>
+          <tr><td>Asset-light operations</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td><span class="cx">✗</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="gap-row reveal" style="transition-delay:.3s">
+      <div class="gap-card">
+        <div class="gap-pct">80%</div>
+        <div class="gap-lbl">of Indian labs have no digital presence or online booking</div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-pct">20%</div>
+        <div class="gap-lbl">of testing services offer any end-to-end solution today</div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-pct">0</div>
+        <div class="gap-lbl">platforms combine lab testing + quick-commerce in India</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S8 GTM ═══ -->
+<section class="slide" id="s-gtm">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label">Go-To-Market Strategy</p>
+      <h2 class="sec-title">City-first. Supply-first. Flywheel second.</h2>
+      <p class="sec-sub">Launching in Hyderabad before expanding. Onboarding labs first — they become the acquisition channel for brands. Verified products unlock the retail and consumer layers.</p>
+    </div>
+    <div class="phases reveal" style="transition-delay:.15s">
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-num">Phase 1</div>
+          <div class="ph-time">0–3<br>Months</div>
+        </div>
+        <div class="ph-right">
+          <div class="ph-targets">
+            <div class="ph-t"><div class="ph-dot" style="background:var(--primary)"></div>Finalize platform (20% remaining work)</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--primary)"></div>Onboard 50+ labs in Hyderabad</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--primary)"></div>Acquire 100 brand product owners</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--primary)"></div>Launch digital campaigns &amp; SEO</div>
+          </div>
+          <div class="ph-budget">
+            <div class="ph-bval">$27.5K</div>
+            <div class="ph-blbl">Phase budget</div>
+          </div>
+        </div>
+      </div>
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-num">Phase 2</div>
+          <div class="ph-time">4–6<br>Months</div>
+        </div>
+        <div class="ph-right">
+          <div class="ph-targets">
+            <div class="ph-t"><div class="ph-dot" style="background:var(--secondary)"></div>Onboard 200+ verified retailers in city</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--secondary)"></div>Launch consumer app &amp; product directory</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--secondary)"></div>Integrate Shadowfax/Porter logistics API</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--secondary)"></div>500+ active consumers onboarded</div>
+          </div>
+          <div class="ph-budget">
+            <div class="ph-bval">$30K</div>
+            <div class="ph-blbl">Phase budget</div>
+          </div>
+        </div>
+      </div>
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-num">Phase 3</div>
+          <div class="ph-time">7–9<br>Months</div>
+        </div>
+        <div class="ph-right">
+          <div class="ph-targets">
+            <div class="ph-t"><div class="ph-dot" style="background:var(--accent)"></div>Expand to 2nd city — Bengaluru</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--accent)"></div>300+ new brands, 100+ new labs</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--accent)"></div>Launch pre-launch testing panel product</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--accent)"></div>500 consumer feedback test cycles</div>
+          </div>
+          <div class="ph-budget">
+            <div class="ph-bval">$32.5K</div>
+            <div class="ph-blbl">Phase budget</div>
+          </div>
+        </div>
+      </div>
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-num">Phase 4</div>
+          <div class="ph-time">10–12<br>Months</div>
+        </div>
+        <div class="ph-right">
+          <div class="ph-targets">
+            <div class="ph-t"><div class="ph-dot" style="background:var(--warn)"></div>Scale GMV to ₹15–25L/month</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--warn)"></div>1,000+ verified product SKUs live</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--warn)"></div>Prepare Series A data room</div>
+            <div class="ph-t"><div class="ph-dot" style="background:var(--warn)"></div>10,000+ active consumers</div>
+          </div>
+          <div class="ph-budget">
+            <div class="ph-bval">$22.5K</div>
+            <div class="ph-blbl">Phase budget</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ S8.5 UNIT ECONOMICS ═══ -->
+<section class="slide" id="s-economics">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label">Unit Economics</p>
+      <h2 class="sec-title">Built for high margins and scale</h2>
+      <p class="sec-sub">Our marketplace mechanics create compounding value with near-zero marginal cost per transaction.</p>
+    </div>
+    <div class="econ-grid reveal" style="transition-delay:.15s">
+      <div class="ue-card">
+        <div class="ue-hdr">Brands / Product Owners</div>
+        <div class="ue-row">
+          <span class="ue-k">Target CAC</span>
+          <span class="ue-v">$45</span>
+        </div>
+        <div class="ue-row">
+          <span class="ue-k">Avg Revenue / Test</span>
+          <span class="ue-v">$120</span>
+        </div>
+        <div class="ue-row">
+          <span class="ue-k">Tests / Year / Brand</span>
+          <span class="ue-v">4.5</span>
+        </div>
+        <div class="ue-row highlight">
+          <span class="ue-k">Annual LTV</span>
+          <span class="ue-v">$540</span>
+        </div>
+        <div class="ue-ratio">LTV:CAC Ratio — 12:1</div>
+      </div>
+      
+      <div class="ue-card">
+        <div class="ue-hdr">Retailers &amp; Consumers</div>
+        <div class="ue-row">
+          <span class="ue-k">Consumer App CAC</span>
+          <span class="ue-v">$1.50</span>
+        </div>
+        <div class="ue-row">
+          <span class="ue-k">Retailer Onboarding</span>
+          <span class="ue-v">$15</span>
+        </div>
+        <div class="ue-row">
+          <span class="ue-k">Marketplace Take Rate</span>
+          <span class="ue-v">10-15%</span>
+        </div>
+        <div class="ue-row highlight">
+          <span class="ue-k">Payback Period</span>
+          <span class="ue-v">&lt; 2 Months</span>
+        </div>
+        <div class="ue-ratio">Highly viral loop cuts CAC by 40% YoY</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S9 FINANCIALS ═══ -->
+<section class="slide" id="s-financials">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label light">Financial Projections</p>
+      <h2 class="sec-title light">Path to profitability by Month 18.</h2>
+      <p class="sec-sub light">Conservative projections based on city-first rollout, phased revenue stream activation, and asset-light operations throughout.</p>
+    </div>
+    <div class="fin-grid">
+      <div class="reveal" style="transition-delay:.15s">
+        <div class="fin-kpis">
+          <div class="kpi"><div class="kpi-val">₹42L</div><div class="kpi-lbl">Projected Year 1 revenue</div></div>
+          <div class="kpi"><div class="kpi-val">₹1.8Cr</div><div class="kpi-lbl">Projected Year 2 revenue</div></div>
+          <div class="kpi"><div class="kpi-val">72%</div><div class="kpi-lbl">Gross margin — testing stream</div></div>
+          <div class="kpi"><div class="kpi-val">M18</div><div class="kpi-lbl">Projected break-even month</div></div>
+        </div>
+        <div class="fin-card">
+          <div class="fin-h">Monthly Revenue Ramp — Year 1</div>
+          <div style="position:relative;height:210px;"><canvas id="revChart"></canvas></div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:.3s">
+        <div class="fin-card">
+          <div class="fin-h">Revenue Mix by Stream — Year 2</div>
+          <div style="position:relative;height:185px;"><canvas id="mixChart"></canvas></div>
+        </div>
+        <div class="fin-card">
+          <div class="fin-h">Use of $110,000 Raised</div>
+          <div class="fund-rows">
+            <div class="f-row"><span class="f-k"><div class="f-dot" style="background:var(--primary)"></div>Marketing Campaigns</span><span class="f-v">$30,000 <span class="f-pct">27%</span></span></div>
+            <div class="f-row"><span class="f-k"><div class="f-dot" style="background:var(--secondary)"></div>Operations &amp; Hiring</span><span class="f-v">$20,000 <span class="f-pct">18%</span></span></div>
+            <div class="f-row"><span class="f-k"><div class="f-dot" style="background:var(--accent)"></div>Platform Development</span><span class="f-v">$10,000 <span class="f-pct">9%</span></span></div>
+            <div class="f-row"><span class="f-k"><div class="f-dot" style="background:var(--warn)"></div>Regional Expansion</span><span class="f-v">$5,000 <span class="f-pct">5%</span></span></div>
+            <div class="f-row"><span class="f-k"><div class="f-dot" style="background:#8B5CF6"></div>Consumer Engagement</span><span class="f-v">$10,000 <span class="f-pct">9%</span></span></div>
+            <div class="f-row"><span class="f-k"><div class="f-dot" style="background:#14B8A6"></div>Office &amp; Infrastructure</span><span class="f-v">$5,000 <span class="f-pct">5%</span></span></div>
+            <div class="f-row"><span class="f-k"><div class="f-dot" style="background:#64748B"></div>Miscellaneous &amp; Buffer</span><span class="f-v">$30,000 <span class="f-pct">27%</span></span></div>
+            <div class="f-row"><span class="f-k" style="color:var(--ink);font-weight:800;">Total Raise</span><span class="f-v" style="font-size: var(--t-base);">$110,000</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S10 TEAM ═══ -->
+<section class="slide" id="s-team">
+  <div class="slide-inner">
+    <div class="reveal">
+      <p class="sec-label">The Team</p>
+      <h2 class="sec-title">Built by people who understand the problem.</h2>
+      <p class="sec-sub">A focused founding team with complementary skills across strategy, operations, technology, and market execution.</p>
+    </div>
+    <div class="team-row reveal" style="transition-delay:.15s">
+      <div class="t-card">
+        <div class="t-avi" style="background:var(--primary)">PK</div>
+        <div>
+          <div class="t-name">Praveen Kumar</div>
+          <div class="t-role">Founder &amp; CEO</div>
+        </div>
+        <div class="t-bio">Leads vision, strategy, and investor relations. Drives product roadmap and key partnership development with lab networks and brand partners across India.</div>
+        <div class="t-tags">
+          <span class="t-tag">Product Strategy</span>
+          <span class="t-tag">Business Dev</span>
+          <span class="t-tag">Lab Partnerships</span>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-avi" style="background:var(--secondary)">VK</div>
+        <div>
+          <div class="t-name">Vishal Kumar</div>
+          <div class="t-role">Co-Founder &amp; COO</div>
+        </div>
+        <div class="t-bio">Leads operations, platform execution, and technology delivery. Oversees retailer onboarding, logistics integration, and day-to-day operational scaling.</div>
+        <div class="t-tags">
+          <span class="t-tag">Operations</span>
+          <span class="t-tag">Platform Delivery</span>
+          <span class="t-tag">Data Engineering</span>
+        </div>
+      </div>
+    </div>
+    <div class="ask-block reveal" style="transition-delay:.3s">
+      <div>
+        <div class="ask-lbl">Seed Round Ask</div>
+        <div class="ask-amt">$110,000</div>
+        <div class="ask-desc">12-month runway to reach GMV ≥ ₹15L/month, 500+ labs, 1,000+ brands, and 10,000+ consumers — the milestones required for a credible Series A conversation.</div>
+      </div>
+      <div class="ask-uses">
+        <div class="ask-use"><div class="use-bar"><div class="use-fill" style="width:100%"></div></div>Marketing — $30K</div>
+        <div class="ask-use"><div class="use-bar"><div class="use-fill" style="width:67%"></div></div>Operations — $20K</div>
+        <div class="ask-use"><div class="use-bar"><div class="use-fill" style="width:33%"></div></div>Platform Dev — $10K</div>
+        <div class="ask-use"><div class="use-bar"><div class="use-fill" style="width:33%"></div></div>Consumer Eng — $10K</div>
+        <div class="ask-use"><div class="use-bar"><div class="use-fill" style="width:100%"></div></div>Buffer &amp; Misc — $30K</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ S11 CLOSE ═══ -->
+<section class="slide" id="s-close">
+  <div class="slide-inner">
+    <div class="close-wrap reveal">
+      <div class="close-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="var(--primary)"><path d="M3 4H21L14 12.5V20.5L10 18.5V12.5L3 4Z" /></svg></div>
+      <h2 class="close-title">India's trust layer for<br>products starts <span class="g">here.</span></h2>
+      <p class="close-sub">Mera Filter is not just a testing marketplace. It is the infrastructure that makes consumer product trust programmable, traceable, and scalable across India's $15T FMCG ecosystem.</p>
+      <div class="contacts">
+        <div class="c-card">
+          <div class="c-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="c-lbl">Founder &amp; CEO</div>
+          <div class="c-val">Praveen Kumar</div>
+        </div>
+        <div class="c-card">
+          <div class="c-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+          <div class="c-lbl">Email</div>
+          <div class="c-val">growth@merafilter.com</div>
+        </div>
+        <div class="c-card">
+          <div class="c-ico"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></div>
+          <div class="c-lbl">Website</div>
+          <div class="c-val">www.merafilter.com</div>
+        </div>
+      </div>
+      <div class="close-pills">
+        <div class="c-pill" style="background:var(--primary-pale);border:1px solid rgba(77, 176, 125, 0.2);">
+          <div class="c-pill-val" style="color:var(--primary);">$110K</div>
+          <div class="c-pill-lbl">Seed Ask</div>
+        </div>
+        <div class="c-pill" style="background:var(--secondary-pale);border:1px solid rgba(236, 169, 24, 0.2);">
+          <div class="c-pill-val" style="color:var(--secondary);">4-sided</div>
+          <div class="c-pill-lbl">Platform model</div>
+        </div>
+        <div class="c-pill" style="background:var(--accent-pale);border:1px solid rgba(79, 70, 229, 0.2);">
+          <div class="c-pill-val" style="color:var(--accent);">M18</div>
+          <div class="c-pill-lbl">Break-even target</div>
+        </div>
+        <div class="c-pill" style="background:var(--warn-pale);border:1px solid rgba(245, 158, 11, 0.2);">
+          <div class="c-pill-val" style="color:var(--warn);">80%</div>
+          <div class="c-pill-lbl">Platform complete</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+
+/* ── NAV ── */
+function goTo(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+
+const ids = ['s-hero','s-problem','s-solution','s-market','s-model','s-commerce','s-competition','s-gtm','s-financials','s-team'];
+const btns = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  ids.forEach(id => { const el = document.getElementById(id); if (el && window.scrollY >= el.offsetTop - 180) cur = id; });
+  btns.forEach((b, i) => b.classList.toggle('active', ids[i] === cur));
+}, { passive: true });
+
+/* ── REVEAL ── */
+const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ── CHARTS ── */
+Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#64748b';
+
+// Market growth
+new Chart(document.getElementById('mktChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2023','2024','2025','2026','2027','2028','2029','2030'],
+    datasets: [{
+      data: [20.0,21.4,22.9,24.5,26.2,28.1,30.0,32.1],
+      backgroundColor: ctx => { const g = ctx.chart.ctx.createLinearGradient(0,0,0,200); g.addColorStop(0,'rgba(77, 176, 125, 0.85)'); g.addColorStop(1,'rgba(77, 176, 125, 0.05)'); return g; },
+      borderRadius: 5, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { callback: v => '$'+v+'B', font: { size: 11 } }, min: 18 }
+    }
+  }
+});
+
+// Segment lines
+new Chart(document.getElementById('segChart'), {
+  type: 'line',
+  data: {
+    labels: ['2023','2024','2025','2026','2027','2028'],
+    datasets: [
+      { label: 'B2B SMEs (K)', data:[50,54,58,63,68,73], borderColor:'#4F46E5', backgroundColor:'rgba(77, 176, 125, 0.1)', fill:true, tension:.4, borderWidth:2, pointRadius:3 },
+      { label: 'B2C Consumers (K)', data:[100,110,121,133,146,161], borderColor:'#ECA918', backgroundColor:'rgba(236, 169, 24, 0.1)', fill:true, tension:.4, borderWidth:2, pointRadius:3 },
+      { label: 'Labs', data:[10,10.5,11,11.6,12.2,12.8], borderColor:'#10B981', backgroundColor:'rgba(79, 70, 229, 0.1)', fill:true, tension:.4, borderWidth:2, pointRadius:3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position:'bottom', labels:{ boxWidth:8, padding:12, font:{ size:11 } } } },
+    scales: {
+      x: { grid:{ display:false }, ticks:{ font:{ size:11 } } },
+      y: { grid:{ color:'rgba(0,0,0,0.05)' }, ticks:{ font:{ size:11 } } }
+    }
+  }
+});
+
+// Revenue ramp
+new Chart(document.getElementById('revChart'), {
+  type: 'bar',
+  data: {
+    labels: ['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'],
+    datasets: [
+      { label: 'Testing (₹L)', data:[0.5,1.2,2.1,3.0,3.8,4.5,5.2,6.0,6.8,7.5,8.2,9.0], backgroundColor:'rgba(77, 176, 125, 0.8)', borderRadius:3, stack:'s' },
+      { label: 'Commerce (₹L)', data:[0,0,0,0.5,1.0,1.8,2.8,4.0,5.5,7.0,9.0,11.5], backgroundColor:'rgba(236, 169, 24, 0.8)', borderRadius:3, stack:'s' },
+      { label: 'Subscriptions (₹L)', data:[0.1,0.2,0.4,0.6,0.9,1.2,1.5,1.8,2.1,2.4,2.7,3.0], backgroundColor:'rgba(79, 70, 229, 0.8)', borderRadius:3, stack:'s' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position:'bottom', labels:{ boxWidth:8, padding:12, font:{ size:11 }, color:'rgba(71, 85, 105, 0.7)' } } },
+    scales: {
+      x: { grid:{display:false}, ticks:{ font:{size:11}, color:'rgba(71, 85, 105, 0.7)' }, stacked:true },
+      y: { grid:{color:'rgba(0,0,0,0.05)'}, ticks:{ callback:v=>'₹'+v+'L', font:{size:11}, color:'rgba(71, 85, 105, 0.7)' }, stacked:true }
+    }
+  }
+});
+
+// Revenue mix doughnut
+new Chart(document.getElementById('mixChart'), {
+  type: 'doughnut',
+  data: {
+    labels:['Lab Commission','Commerce GMV','Subscriptions','Testing Panel','Placements'],
+    datasets:[{ data:[35,30,18,10,7], backgroundColor:['#4F46E5','#ECA918','#10B981','#F59E0B','#8B5CF6'], borderWidth:0, hoverOffset:6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout:'66%',
+    plugins: { legend:{ position:'right', labels:{ boxWidth:9, padding:10, font:{size:11}, color:'rgba(71, 85, 105, 0.7)' } } }
+  }
+});
+
+</script>
+</body>
+</html>
