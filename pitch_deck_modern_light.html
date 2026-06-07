@@ -1,0 +1,2960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeraFilter — Verified Products. Trusted Commerce.</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <!-- ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    /* ═══ GLOBAL STYLES & DESIGN SYSTEM (LIGHT THEME) ═══ */
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --primary-glow: rgba(5, 150, 105, 0.15);
+      --primary-pale: rgba(5, 150, 105, 0.05);
+      --secondary: #d97706;
+      --secondary-glow: rgba(217, 119, 6, 0.12);
+      --secondary-pale: rgba(217, 119, 6, 0.04);
+      --accent: #0891b2;
+      --accent-glow: rgba(8, 145, 178, 0.12);
+      --bg: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.75);
+      --card-border: rgba(15, 23, 42, 0.06);
+      --text: #0f172a;
+      --text-muted: #475569;
+      --red: #e11d48;
+      --red-glow: rgba(225, 29, 72, 0.15);
+      --red-pale: rgba(225, 29, 72, 0.04);
+      --font-outfit: 'Outfit', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-inter);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    /* ═══ BACKGROUND AURORAS (PASTEL LIGHT) ═══ */
+    .aurora-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .aurora {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.65;
+    }
+
+    .aurora-1 {
+      top: -20%;
+      left: -10%;
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%);
+      animation: pulse-aurora 25s ease-in-out infinite alternate;
+    }
+
+    .aurora-2 {
+      bottom: -20%;
+      right: -10%;
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+      animation: pulse-aurora 30s ease-in-out infinite alternate-reverse;
+    }
+
+    .aurora-3 {
+      top: 30%;
+      left: 50%;
+      width: 40vw;
+      height: 40vw;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.04) 0%, transparent 70%);
+      animation: pulse-aurora 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse-aurora {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(8%, 8%) scale(1.12); }
+    }
+
+    /* Particle Canvas background for Cover */
+    #particle-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* ═══ PRESENTATION SHELL ═══ */
+    #presentation {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── PROGRESS BAR ─── */
+    #progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+    }
+
+    /* ─── HEADER/NAVBAR ─── */
+    header {
+      height: 75px;
+      padding: 0 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+      background: rgba(248, 250, 252, 0.65);
+      backdrop-filter: blur(20px);
+      z-index: 50;
+      flex-shrink: 0;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-shield {
+      width: 34px;
+      height: 34px;
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 2.2;
+      filter: drop-shadow(0 0 6px var(--primary-glow));
+    }
+
+    .logo-text {
+      font-family: var(--font-outfit);
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-text span {
+      color: var(--primary);
+    }
+
+    .logo-tagline {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    .header-info {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-badge {
+      background: var(--primary-pale);
+      color: var(--primary);
+      border: 1px solid rgba(5, 150, 105, 0.25);
+      padding: 5px 12px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── SLIDES CONTAINER ─── */
+    .slides-wrapper {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(40px) scale(0.99);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 60px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(0) scale(1);
+    }
+
+    .slide.prev {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-40px) scale(0.99);
+    }
+
+    .slide-content {
+      width: 100%;
+      max-width: 1160px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* ─── TYPOGRAPHY & TITLE UTILITIES ─── */
+    .slide-num-indicator {
+      font-family: var(--font-outfit);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 6px;
+    }
+
+    .title-g {
+      font-family: var(--font-outfit);
+      font-size: 46px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #0f172a 40%, #475569);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-g span {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-g span.gold {
+      background: linear-gradient(135deg, var(--secondary), #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle-g {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 800px;
+      margin-bottom: 30px;
+    }
+
+    /* ─── GLASSMorphic CARDS (LIGHT THEME) ─── */
+    .glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 30px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.6), transparent);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(15, 23, 42, 0.12);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 45px rgba(5, 150, 105, 0.06);
+    }
+
+    /* ─── INTERACTIVE PERSPECTIVE CARDS (Tilt Simulation) ─── */
+    .tilt-card-wrap {
+      perspective: 1000px;
+    }
+    .tilt-card {
+      transition: transform 0.35s ease;
+      transform-style: preserve-3d;
+    }
+    .tilt-card:hover {
+      transform: rotateX(6deg) rotateY(-6deg) translateZ(10px);
+    }
+
+    /* ─── SIDEBAR & FOOTER CONTROLS ─── */
+    #dot-nav {
+      position: absolute;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 90;
+    }
+
+    .nav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.12);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-dot:hover {
+      background: rgba(15, 23, 42, 0.35);
+    }
+
+    .nav-dot.active {
+      background: var(--primary);
+      box-shadow: 0 0 12px var(--primary);
+      transform: scale(1.4);
+    }
+
+    /* Footer controls */
+    footer {
+      height: 70px;
+      padding: 0 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(15, 23, 42, 0.05);
+      background: rgba(248, 250, 252, 0.65);
+      backdrop-filter: blur(20px);
+      z-index: 50;
+      flex-shrink: 0;
+    }
+
+    .slide-counter {
+      font-family: var(--font-outfit);
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .slide-counter span {
+      color: var(--text);
+      font-size: 18px;
+    }
+
+    .controls-btn-container {
+      display: flex;
+      gap: 16px;
+    }
+
+    .control-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.02);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .control-btn:hover:not(:disabled) {
+      background: rgba(15, 23, 42, 0.06);
+      border-color: rgba(15, 23, 42, 0.18);
+      color: var(--primary);
+      box-shadow: 0 0 15px rgba(5, 150, 105, 0.1);
+    }
+
+    .control-btn:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+
+    .control-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    /* ═══ SLIDE 1: COVER SLIDE ═══ */
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .cover-pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .pillar-tag {
+      background: rgba(15, 23, 42, 0.02);
+      border: 1px solid rgba(15, 23, 42, 0.05);
+      padding: 16px 20px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .pillar-tag:hover {
+      border-color: var(--primary-glow);
+      background: var(--primary-pale);
+      transform: translateX(4px);
+    }
+
+    .pillar-tag svg {
+      color: var(--primary);
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 4px var(--primary-glow));
+    }
+
+    .cover-brand-g {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      height: 300px;
+    }
+
+    .shield-logo-glow {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 65%);
+      filter: blur(25px);
+      z-index: 1;
+      animation: aura-pulse 5s ease-in-out infinite alternate; /* upgraded */
+    }
+
+    @keyframes aura-pulse {
+      0% { transform: scale(0.9); opacity: 0.5; }
+      100% { transform: scale(1.15); opacity: 0.9; }
+    }
+
+    .large-shield {
+      width: 190px;
+      height: 190px;
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 2.2;
+      z-index: 3;
+      filter: drop-shadow(0 0 15px rgba(5, 150, 105, 0.2));
+      animation: logo-float 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes logo-float {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-12px) rotate(2deg); }
+    }
+
+    /* ═══ SLIDE 2: THE PROBLEM ═══ */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap: 40px;
+    }
+
+    .list-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .issue-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .issue-item strong {
+      color: var(--text);
+    }
+
+    .issue-item svg {
+      color: var(--red);
+      margin-top: 4px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 4px var(--red-glow));
+    }
+
+    .p-cards-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .p-card-small {
+      display: flex;
+      gap: 20px;
+      background: var(--red-pale);
+      border-left: 4px solid var(--red);
+      align-items: center;
+      position: relative;
+    }
+
+    .p-card-small-ico {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(225, 29, 72, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--red);
+    }
+
+    .p-card-small h4 {
+      font-family: var(--font-outfit);
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .p-card-small p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ═══ SLIDE 3: MARKET OPPORTUNITY (ISOMETRIC STACK) ═══ */
+    .market-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .tam-sam-som-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tss-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.01);
+      border: 1px solid rgba(15, 23, 42, 0.03);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tss-row:hover {
+      background: rgba(15, 23, 42, 0.03);
+      border-color: rgba(15, 23, 42, 0.08);
+      transform: translateX(6px);
+    }
+
+    .tss-row.active {
+      background: var(--primary-pale);
+      border-color: rgba(5, 150, 105, 0.25);
+    }
+
+    .tss-badge-v {
+      font-family: var(--font-outfit);
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
+      width: 100px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .tss-text-content h4 {
+      font-family: var(--font-outfit);
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .tss-text-content p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Isometric Stack Graphic */
+    .market-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 320px;
+      perspective: 900px;
+    }
+
+    .tss-stack-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      transform: rotateX(60deg) rotateZ(-30deg);
+      transform-style: preserve-3d;
+    }
+
+    .tss-ring {
+      position: absolute;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .ring-tam {
+      width: 280px;
+      height: 280px;
+      border: 2px dashed rgba(15, 23, 42, 0.18);
+      background: rgba(15, 23, 42, 0.015);
+      z-index: 10;
+      transform: translate(-50%, -50%) translateZ(0px);
+    }
+
+    .ring-sam {
+      width: 190px;
+      height: 190px;
+      border: 2px dashed rgba(8, 145, 178, 0.4);
+      background: rgba(8, 145, 178, 0.04);
+      z-index: 20;
+      transform: translate(-50%, -50%) translateZ(40px);
+    }
+
+    .ring-som {
+      width: 100px;
+      height: 100px;
+      border: 2px solid var(--primary);
+      background: var(--primary-glow);
+      z-index: 30;
+      transform: translate(-50%, -50%) translateZ(80px);
+      box-shadow: 0 0 25px rgba(5, 150, 105, 0.2);
+    }
+
+    /* Hover Ring states */
+    .ring-tam.highlight {
+      border-color: var(--secondary);
+      background: var(--secondary-pale);
+      transform: translate(-50%, -50%) translateZ(20px) scale(1.04);
+    }
+
+    .ring-sam.highlight {
+      border-color: #0284c7;
+      background: rgba(2, 132, 199, 0.12);
+      transform: translate(-50%, -50%) translateZ(65px) scale(1.06);
+      box-shadow: 0 0 25px rgba(8, 145, 178, 0.2);
+    }
+
+    .ring-som.highlight {
+      transform: translate(-50%, -50%) translateZ(110px) scale(1.1);
+      box-shadow: 0 10px 30px rgba(5, 150, 105, 0.35);
+    }
+
+    .ring-lbl-iso {
+      font-family: var(--font-outfit);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text);
+      text-transform: uppercase;
+      transform: rotateZ(30deg) rotateX(-20deg);
+    }
+
+    /* ═══ SLIDE 4: OUR SOLUTION ═══ */
+    .sol-components {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .sol-card {
+      padding: 30px 24px;
+    }
+
+    .sol-card.primary {
+      background: linear-gradient(135deg, rgba(255,255,255,0.75), var(--primary-pale));
+    }
+    .sol-card.accent {
+      background: linear-gradient(135deg, rgba(255,255,255,0.75), var(--accent-glow));
+    }
+    .sol-card.secondary {
+      background: linear-gradient(135deg, rgba(255,255,255,0.75), var(--secondary-pale));
+    }
+
+    .sol-card-num {
+      font-family: var(--font-outfit);
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .sol-card h3 {
+      font-family: var(--font-outfit);
+      font-size: 20px;
+      font-weight: 800;
+      margin-top: 14px;
+      margin-bottom: 10px;
+    }
+
+    .sol-card p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .sol-card-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(15, 23, 42, 0.02);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      border: 1px solid rgba(15, 23, 42, 0.05);
+      transition: all 0.35s ease;
+    }
+
+    .sol-card:hover .sol-card-icon {
+      border-color: var(--primary-glow);
+      background: var(--primary-glow);
+      color: var(--primary-dark);
+      transform: scale(1.1);
+    }
+
+    .sol-card-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* ═══ SLIDE 5: HOW IT WORKS ═══ */
+    .flow-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      position: relative;
+    }
+
+    .flow-steps::before {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      border-top: 2px dashed rgba(15, 23, 42, 0.15); /* upgraded */
+      z-index: 1;
+    }
+
+    .flow-step-card {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .flow-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid rgba(15, 23, 42, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-outfit);
+      font-weight: 900;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .flow-step-card.active .flow-badge {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-glow);
+      box-shadow: 0 0 15px var(--primary-glow);
+      transform: scale(1.15);
+    }
+
+    .flow-title {
+      font-family: var(--font-outfit);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .flow-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .flow-details-box {
+      min-height: 130px;
+      display: grid;
+      grid-template-columns: 1fr 0.8fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .flow-details-content {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .flow-details-ico {
+      width: 54px;
+      height: 54px;
+      background: var(--primary-glow);
+      border: 1px solid rgba(5, 150, 105, 0.25);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    /* Float glass layout wireframe mockup */
+    .flow-wireframe-mock {
+      background: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 9px;
+      font-family: monospace;
+      color: var(--text-muted);
+      height: 80px;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .flow-w-line {
+      height: 6px;
+      border-radius: 2px;
+      background: rgba(15, 23, 42, 0.06);
+    }
+
+    .flow-w-line.brand-accent {
+      background: var(--primary-glow);
+      border-left: 2px solid var(--primary);
+      padding-left: 4px;
+      color: var(--primary);
+    }
+
+    /* ═══ SLIDE 6: PRODUCT ECOSYSTEM (Comet Orbit) ═══ */
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .eco-stakeholder-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .eco-item-card {
+      padding: 20px;
+      border-left: 3px solid var(--primary);
+      cursor: pointer;
+    }
+
+    .eco-item-card h4 {
+      font-family: var(--font-outfit);
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 6px;
+      transition: color 0.3s ease;
+    }
+
+    .eco-item-card:hover h4 {
+      color: var(--primary);
+    }
+
+    .eco-item-card ul {
+      list-style: none;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* Graphic orbit representation */
+    .eco-graphic {
+      width: 100%;
+      height: 320px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .eco-hub {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--primary-glow);
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      box-shadow: 0 0 25px rgba(5, 150, 105, 0.2);
+    }
+
+    .eco-orbit-ring {
+      position: absolute;
+      border: 1px dashed rgba(15, 23, 42, 0.12);
+      border-radius: 50%;
+    }
+
+    .eco-ring-1 { width: 190px; height: 190px; }
+    .eco-ring-2 { width: 280px; height: 280px; }
+
+    .eco-node {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(15, 23, 42, 0.15); /* upgraded width */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      z-index: 15;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .eco-node.primary { border-color: var(--primary); color: var(--primary); background: var(--primary-pale); }
+    .eco-node.accent { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+    .eco-node.secondary { border-color: var(--secondary); color: var(--secondary); background: var(--secondary-pale); }
+    .eco-node.red { border-color: var(--red); color: var(--red); background: var(--red-pale); }
+
+    /* ═══ SLIDE 7: BUSINESS MODEL ═══ */
+    .biz-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .revenue-flywheel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .flywheel-stage {
+      padding: 16px 20px;
+      background: rgba(15, 23, 42, 0.01);
+      border: 1px solid rgba(15, 23, 42, 0.04);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      transition: all 0.3s ease; /* upgraded */
+    }
+
+    .flywheel-stage:hover {
+      transform: translateX(6px);
+      border-color: rgba(5, 150, 105, 0.15);
+      background: var(--primary-pale);
+    }
+
+    .flywheel-stage::after {
+      content: '↓';
+      position: absolute;
+      bottom: -22px;
+      left: 32px;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 800;
+      opacity: 0.6;
+    }
+
+    .flywheel-stage:last-child::after { content: none; }
+
+    .flywheel-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .rev-streams-box {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .rev-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 24px;
+      background: rgba(15, 23, 42, 0.015);
+      border: 1px solid rgba(15, 23, 42, 0.04);
+      border-radius: 16px;
+      transition: all 0.3s ease; /* upgraded */
+    }
+
+    .rev-item:hover {
+      border-color: rgba(5, 150, 105, 0.25);
+      background: var(--primary-pale);
+      transform: scale(1.02);
+    }
+
+    .rev-item h4 {
+      font-family: var(--font-outfit);
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .rev-item p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .rev-val-badge {
+      font-family: var(--font-outfit);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary);
+      background: var(--primary-pale);
+      border: 1px solid rgba(5, 150, 105, 0.25);
+      padding: 6px 14px;
+      border-radius: 8px;
+    }
+
+    /* ═══ SLIDE 8: WHY NOW (Urgency Dials) ═══ */
+    .wn-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .wn-card {
+      padding: 30px 24px;
+    }
+
+    .wn-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .wn-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(15, 23, 42, 0.02);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+    }
+
+    .wn-card h3 {
+      font-family: var(--font-outfit);
+      font-weight: 800;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .wn-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Accent Top Stripe for Cards */
+    .card-accent-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      z-index: 10;
+    }
+    .card-accent-line.primary {
+      background: var(--primary);
+    }
+    .card-accent-line.accent {
+      background: var(--accent);
+    }
+    .card-accent-line.secondary {
+      background: var(--secondary);
+    }
+
+    /* Radial Progress Dials Upgraded */
+    .radial-progress-container {
+      position: relative;
+      width: 50px;
+      height: 50px;
+    }
+    .radial-progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-outfit);
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    /* Radial Progress SVGs */
+    .radial-progress {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .radial-progress path {
+      fill: none;
+      stroke-width: 3.2;
+    }
+
+    .radial-progress .bg-circle {
+      stroke: rgba(15, 23, 42, 0.12);
+    }
+
+    .radial-progress .val-circle {
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.8s ease;
+    }
+
+    /* ═══ SLIDE 9: COMPETITIVE ADVANTAGE ═══ */
+    .moats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .moat-card {
+      padding: 26px;
+      transition: all 0.3s ease;
+    }
+
+    .moat-card:nth-child(odd) {
+      border-left: 3px solid var(--accent);
+    }
+
+    .moat-card:nth-child(even) {
+      border-left: 3px solid var(--primary);
+    }
+
+    .moat-card:hover {
+      border-color: var(--secondary);
+    }
+
+    .moat-card h4 {
+      font-family: var(--font-outfit);
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .moat-card h4 svg {
+      color: var(--accent);
+      width: 20px;
+      height: 20px;
+    }
+
+    .moat-card p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ═══ SLIDE 10: GTM STRATEGY ═══ */
+    .gtm-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .gtm-card {
+      padding: 26px;
+      position: relative;
+    }
+
+    .gtm-card::after {
+      content: attr(data-phase);
+      position: absolute;
+      bottom: -20px;
+      right: -10px;
+      font-family: var(--font-outfit);
+      font-size: 110px;
+      font-weight: 900;
+      color: rgba(15, 23, 42, 0.03);
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .gtm-phase-badge {
+      display: inline-block;
+      margin-bottom: 14px;
+      background: var(--primary);
+      color: var(--bg);
+      font-family: var(--font-outfit);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+      box-shadow: 0 4px 10px rgba(5, 150, 105, 0.12);
+      z-index: 5;
+    }
+
+    .gtm-card.sec .gtm-phase-badge {
+      background: var(--accent);
+      box-shadow: 0 4px 10px rgba(8, 145, 178, 0.12);
+    }
+
+    .gtm-card.gold .gtm-phase-badge {
+      background: var(--secondary);
+      box-shadow: 0 4px 10px rgba(217, 119, 6, 0.12);
+    }
+
+    .gtm-card h4 {
+      font-family: var(--font-outfit);
+      font-size: 17px;
+      font-weight: 800;
+      margin-top: 10px;
+      margin-bottom: 16px;
+    }
+
+    .gtm-card ul {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      list-style: none;
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+
+    .gtm-card ul li {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .gtm-card ul li::before {
+      content: '✓';
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .gtm-card.sec ul li::before {
+      color: var(--accent);
+    }
+
+    .gtm-card.gold ul li::before {
+      color: var(--secondary);
+    }
+
+    /* ═══ SLIDE 11: TRACTION ═══ */
+    .traction-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    .trac-card-half {
+      padding: 30px;
+    }
+
+    .trac-card-half h3 {
+      font-family: var(--font-outfit);
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .trac-item-row {
+      display: flex;
+      gap: 14px;
+      padding: 16px 8px;
+      border-bottom: 1px dashed rgba(15, 23, 42, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .trac-item-row:hover {
+      background: rgba(15, 23, 42, 0.015);
+      border-radius: 8px;
+      transform: translateX(4px);
+    }
+
+    .trac-item-row:last-child {
+      border-bottom: none;
+    }
+
+    .trac-indicator {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary-glow);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+      filter: drop-shadow(0 0 4px var(--primary-glow));
+    }
+
+    .trac-card-half.orange .trac-indicator {
+      border-color: var(--secondary);
+      color: var(--secondary);
+      background: var(--secondary-glow);
+      filter: drop-shadow(0 0 4px var(--secondary-glow));
+    }
+
+    .trac-text h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .trac-text p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    /* ═══ SLIDE 12: FUTURE VISION ═══ */
+    .vision-layout {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .vision-subcard {
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      transition: all 0.35s ease;
+    }
+
+    .vision-subcard:hover .vision-subcard-icon {
+      color: var(--secondary);
+      transform: rotate(8deg) scale(1.1);
+      background: var(--secondary-glow);
+    }
+
+    .vision-subcard-icon {
+      width: 46px;
+      height: 46px;
+      background: rgba(15, 23, 42, 0.02);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      flex-shrink: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .vision-subcard-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    .vision-subcard-text h4 {
+      font-family: var(--font-outfit);
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .vision-subcard-text p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ═══ SLIDE 13: FINANCIAL PROJECTIONS ═══ */
+    .fin-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .fin-kpis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .fin-kpi-card {
+      padding: 22px;
+      text-align: center;
+      transition: all 0.35s ease;
+    }
+
+    .fin-kpi-card:hover {
+      border-color: rgba(5, 150, 105, 0.25);
+      box-shadow: 0 10px 25px rgba(5, 150, 105, 0.06);
+      transform: translateY(-3px);
+    }
+
+    .fin-kpi-val {
+      font-family: var(--font-outfit);
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .fin-kpi-lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .fin-chart-card {
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* ═══ SLIDE 14: FUNDING ASK (Donut Chart) ═══ */
+    .ask-layout {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .ask-visual-card {
+      padding: 40px 30px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      border-color: rgba(5, 150, 105, 0.25);
+    }
+
+    .ask-amount-g {
+      font-family: var(--font-outfit);
+      font-size: 50px;
+      font-weight: 900;
+      color: var(--primary);
+      text-shadow: 0 0 20px rgba(5, 150, 105, 0.15);
+    }
+
+    /* SVG Donut classes */
+    .donut-visual-container {
+      position: relative;
+      width: 140px;
+      height: 140px;
+    }
+
+    .donut-labels-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-outfit);
+      font-weight: 900;
+      font-size: 22px;
+      color: var(--text);
+    }
+
+    .ask-allocation {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .alloc-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .alloc-row:hover {
+      background: rgba(15, 23, 42, 0.02);
+    }
+
+    .alloc-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    .alloc-bar-bg {
+      height: 6px;
+      background: rgba(15, 23, 42, 0.05);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .alloc-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 1s ease;
+    }
+
+    /* ═══ SLIDE 15: CLOSING ═══ */
+    .close-layout {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      position: relative;
+    }
+
+    .close-quote {
+      font-family: var(--font-outfit);
+      font-size: 38px;
+      font-weight: 900;
+      max-width: 850px;
+      line-height: 1.35;
+      background: linear-gradient(135deg, #0f172a, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      z-index: 5;
+    }
+
+    .close-logo-heartbeat {
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 0.5;
+      opacity: 0.08;
+      z-index: 1;
+      animation: heartbeat-ripple 3s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat-ripple {
+      0% { transform: scale(0.9); opacity: 0.04; }
+      50% { transform: scale(1.05); opacity: 0.12; }
+      100% { transform: scale(0.9); opacity: 0.04; }
+    }
+
+    .close-footer {
+      display: flex;
+      gap: 20px;
+      margin-top: 30px;
+      z-index: 5;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .close-btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 10px 20px;
+      border-radius: 99px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+      font-size: 13px;
+    }
+
+    .close-btn-cta:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--primary-glow);
+    }
+
+    .close-btn-cta svg {
+      color: var(--primary);
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ═══ RESPONSIVE ADJUSTMENTS ═══ */
+    @media (max-width: 992px) {
+      .hero-layout, .problem-grid, .market-layout, .ecosystem-grid, .biz-grid, .traction-layout, .fin-layout, .ask-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      
+      .tss-stack-container {
+        width: 220px;
+        height: 220px;
+      }
+      
+      .ring-tam { width: 220px; height: 220px; }
+      .ring-sam { width: 150px; height: 150px; }
+      .ring-som { width: 80px; height: 80px; }
+      
+      .sol-components, .wn-grid, .moats-grid, .gtm-grid, .vision-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .slide {
+        padding: 20px 30px;
+        overflow-y: auto;
+      }
+
+      body {
+        overflow-y: auto;
+      }
+
+      #dot-nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Auroras -->
+  <div class="aurora-container">
+    <div class="aurora aurora-1"></div>
+    <div class="aurora aurora-2"></div>
+    <div class="aurora aurora-3"></div>
+  </div>
+
+  <!-- Particle Background Canvas -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Shell Wrapper -->
+  <div id="presentation">
+    
+    <!-- Top Progress Line -->
+    <div id="progress-bar"></div>
+
+    <!-- Header -->
+    <header>
+      <div class="logo-container">
+        <svg class="logo-shield" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L3 5v6c0 5.52 4.48 10 9 10s9-4.48 9-10V5l-9-3z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <div class="logo-text">Mera<span>Filter</span></div>
+          <div class="logo-tagline">Growth Partner</div>
+        </div>
+      </div>
+      <div class="header-info">
+        <span class="nav-badge">SEED STAGE</span>
+        <span>merafilter.in</span>
+      </div>
+    </header>
+
+    <!-- Slides Wrapper -->
+    <div class="slides-wrapper">
+
+      <!-- SLIDE 1: COVER -->
+      <div class="slide active" id="slide-1">
+        <div class="slide-content">
+          <div class="hero-layout">
+            <div>
+              <div class="slide-num-indicator">01 / Introduction</div>
+              <h1 class="title-g">Verified Products.<br><span>Trusted Commerce.</span></h1>
+              <p class="subtitle-g">India’s first trust-driven commerce ecosystem combining verification infrastructure, testing, and trust scores to power modern product commerce.</p>
+              <div class="cover-pillars">
+                <div class="pillar-tag">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8 8 3.59 8 8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Product Testing
+                </div>
+                <div class="pillar-tag">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8 8 3.59 8 8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Trust Infrastructure
+                </div>
+                <div class="pillar-tag">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8 8 3.59 8 8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Product Trust Scores
+                </div>
+                <div class="pillar-tag">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M21 12c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8 8 3.59 8 8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Consumer Commerce
+                </div>
+              </div>
+            </div>
+            <div class="cover-brand-g">
+              <div class="shield-logo-glow"></div>
+              <svg class="large-shield" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L3 5v6c0 5.52 4.48 10 9 10s9-4.48 9-10V5l-9-3z" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 11l2 2 4-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: THE PROBLEM -->
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <div class="slide-num-indicator">02 / The Problem</div>
+          <h2 class="title-g">Consumers Don't Know<br><span>What to Trust</span></h2>
+          <div class="problem-grid">
+            <div class="list-wrapper">
+              <p class="subtitle-g" style="margin-bottom:20px;">Millions of Indian consumers purchase products daily with zero visibility into safety, quality standards, or authenticity.</p>
+              <div class="issue-item">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                <span><strong>Pervasive Adulteration:</strong> Critical segments like health supplements, honey, and ghee have record high fail rates in random safety tests.</span>
+              </div>
+              <div class="issue-item">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                <span><strong>Fake & Misleading Labels:</strong> Claims of "100% organic" or "natural" are printed without validation or certification checks.</span>
+              </div>
+              <div class="issue-item">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                <span><strong>Fragmented Systems:</strong> No centralized digital registry connects certified testing laboratories, brand listings, and retail stores.</span>
+              </div>
+            </div>
+            <div class="p-cards-col tilt-card-wrap">
+              <div class="glass-card p-card-small tilt-card">
+                <div style="position: absolute; top: 10px; right: 14px; font-size: 9px; font-weight: 900; color: var(--red); background: var(--red-pale); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em;">BRANDS</div>
+                <div class="p-card-small-ico">🏢</div>
+                <div>
+                  <h4>Brands & Product Owners</h4>
+                  <p>Building consumer trust is expensive, testing is fragmented, and SMEs struggle to scale compliance signals effectively.</p>
+                </div>
+              </div>
+              <div class="glass-card p-card-small tilt-card">
+                <div style="position: absolute; top: 10px; right: 14px; font-size: 9px; font-weight: 900; color: var(--red); background: var(--red-pale); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em;">CONSUMERS</div>
+                <div class="p-card-small-ico">👥</div>
+                <div>
+                  <h4>Consumers</h4>
+                  <p>Distrust nutrition labels, struggle to verify authenticity, and lack access to simple independent quality data.</p>
+                </div>
+              </div>
+              <div class="glass-card p-card-small tilt-card">
+                <div style="position: absolute; top: 10px; right: 14px; font-size: 9px; font-weight: 900; color: var(--red); background: var(--red-pale); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em;">LABS</div>
+                <div class="p-card-small-ico">🔬</div>
+                <div>
+                  <h4>Laboratories</h4>
+                  <p>Suffer from massive underutilized capacity due to zero direct digital channels to reach consumer brands.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: MARKET OPPORTUNITY (ISOMETRIC STACK) -->
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <div class="slide-num-indicator">03 / Market Opportunity</div>
+          <h2 class="title-g">India's Trust Economy Is <span>Broken</span></h2>
+          <p class="subtitle-g" style="margin-bottom:20px;">Health-aware consumers are shifting purchasing habits from cheap products to verified, tested items. Verification is the next major wave.</p>
+          <div class="market-layout">
+            <div class="tam-sam-som-container">
+              <div class="tss-row active" onmouseenter="highlightTSS('som')" onclick="highlightTSS('som')">
+                <div class="tss-badge-v">$100M</div>
+                <div class="tss-text-content">
+                  <h4>SOM — Serviceable Obtainable Market</h4>
+                  <p>Initial penetration in Tier-1 quick commerce and supplement validation (Hyderabad & Bengaluru).</p>
+                </div>
+              </div>
+              <div class="tss-row" onmouseenter="highlightTSS('sam')" onclick="highlightTSS('sam')">
+                <div class="tss-badge-v">$5.5B</div>
+                <div class="tss-text-content">
+                  <h4>SAM — Serviceable Addressable Market</h4>
+                  <p>Quick commerce & FMCG safety verification sector across major metropolitan hubs in India.</p>
+                </div>
+              </div>
+              <div class="tss-row" onmouseenter="highlightTSS('tam')" onclick="highlightTSS('tam')">
+                <div class="tss-badge-v">$20B</div>
+                <div class="tss-text-content">
+                  <h4>TAM — Total Addressable Market</h4>
+                  <p>Global consumer product safety verification, laboratory testing aggregation, and trust-commerce ecosystem.</p>
+                </div>
+              </div>
+            </div>
+            <div class="market-visual">
+              <div class="tss-stack-container">
+                <div class="tss-ring ring-tam" id="v-tam"><span class="ring-lbl-iso" style="margin-top: 190px;">TAM ($20B)</span></div>
+                <div class="tss-ring ring-sam" id="v-sam"><span class="ring-lbl-iso" style="margin-top: 120px;">SAM ($5.5B)</span></div>
+                <div class="tss-ring ring-som highlight" id="v-som"><span class="ring-lbl-iso">SOM ($100M)</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: OUR SOLUTION (Drawing SVGs) -->
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <div class="slide-num-indicator">04 / Our Solution</div>
+          <h2 class="title-g">Introducing <span>MERAFILTER</span></h2>
+          <p class="subtitle-g">We are not just another e-commerce platform. We are building the trust layer for consumer commerce, providing Trust-as-a-Service.</p>
+          <div class="sol-components tilt-card-wrap">
+            <div class="glass-card sol-card primary tilt-card">
+              <div class="card-accent-line primary"></div>
+              <div class="sol-card-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2l-7 4v6c0 5.5 4.5 10 7 10s7-4.5 7-10V6l-7-4zm0 4a3 3 0 110 6 3 3 0 010-6zm-4 11c0-2 1.8-3 4-3s4 1 4 3H8z"/></svg>
+              </div>
+              <span class="sol-card-num">Component 01</span>
+              <h3>Product Testing</h3>
+              <p>Direct digital aggregation linking brands to NABL/FSSAI-certified laboratories with clear pricing.</p>
+            </div>
+            <div class="glass-card sol-card accent tilt-card">
+              <div class="card-accent-line accent"></div>
+              <div class="sol-card-icon">
+                <svg viewBox="0 0 24 24"><path d="M19.5 3h-14L4 6v2c0 2.8 2.2 5 5 5h6c2.8 0 5-2.2 5-5V6l-1-3zm-1 5c0 1.7-1.3 3-3 3H9.5c-1.7 0-3-1.3-3-3V6.5h12V8zM5 15h14v2H5v-2zm2 4h10v2H7v-2z"/></svg>
+              </div>
+              <span class="sol-card-num">Component 02</span>
+              <h3>Verification Infrastructure</h3>
+              <p>Independent batch testing checks. Badges are earned and stored transparently, not purchased.</p>
+            </div>
+            <div class="glass-card sol-card secondary tilt-card">
+              <div class="card-accent-line secondary"></div>
+              <div class="sol-card-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4.8l6.9 12H5.1L12 6.8zm-1 3v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+              </div>
+              <span class="sol-card-num">Component 03</span>
+              <h3>Trust Scores</h3>
+              <p>Proprietary scoring engine indexing ingredient quality, test consistency, and regulatory audit compliance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: HOW IT WORKS (Timeline with Device Wireframe) -->
+      <div class="slide" id="slide-5">
+        <div class="slide-content">
+          <div class="slide-num-indicator">05 / The Workflow</div>
+          <h2 class="title-g">Programmable <span>Verification Flow</span></h2>
+          <p class="subtitle-g">A transparent, automated loop connecting physical testing directly to digital commerce checkouts.</p>
+          <div class="flow-container">
+            <div class="flow-steps">
+              <div class="flow-step-card active" onclick="activateFlowStep(1)">
+                <div class="flow-badge">1</div>
+                <div class="flow-title">Brand Submit</div>
+                <div class="flow-desc">Upload specs & samples</div>
+              </div>
+              <div class="flow-step-card" onclick="activateFlowStep(2)">
+                <div class="flow-badge">2</div>
+                <div class="flow-title">Lab Testing</div>
+                <div class="flow-desc">Independent lab test</div>
+              </div>
+              <div class="flow-step-card" onclick="activateFlowStep(3)">
+                <div class="flow-badge">3</div>
+                <div class="flow-title">Data Upload</div>
+                <div class="flow-desc">Reports & certs digitized</div>
+              </div>
+              <div class="flow-step-card" onclick="activateFlowStep(4)">
+                <div class="flow-badge">4</div>
+                <div class="flow-title">Score Generation</div>
+                <div class="flow-desc">Trust badge unlocked</div>
+              </div>
+              <div class="flow-step-card" onclick="activateFlowStep(5)">
+                <div class="flow-badge">5</div>
+                <div class="flow-title">Safe Checkout</div>
+                <div class="flow-desc">Consumer buys verified</div>
+              </div>
+            </div>
+            <div class="glass-card flow-details-box">
+              <div class="flow-details-content" id="flow-content-box">
+                <div class="flow-details-ico">📤</div>
+                <div>
+                  <h4 class="flow-title" style="font-size:18px; margin-bottom:6px;">Step 1: Brand Submits Products</h4>
+                  <p class="flow-desc" style="font-size:14px; line-height:1.5;">Brand registers SKU details on the dashboard and mails/sends physical batches to our platform's automated routing system.</p>
+                </div>
+              </div>
+              <!-- Wireframe UI Mockup on the right -->
+              <div class="flow-wireframe-mock" id="flow-wireframe-mock">
+                <div class="flow-w-line brand-accent">MeraFilter Portal — Dashboard</div>
+                <div class="flow-w-line" style="width: 80%;">SKU Name: Premium Supplement Gold</div>
+                <div class="flow-w-line" style="width: 50%;">Batch Code: #HYD-901A</div>
+                <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                  <span style="color:var(--primary);">[Pending Sample Delivery]</span>
+                  <span style="opacity:0.3;">v1.2</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: PRODUCT ECOSYSTEM (Comet Orbit) -->
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <div class="slide-num-indicator">06 / Ecosystem</div>
+          <h2 class="title-g">Multi-Stakeholder <span>Platform Flywheel</span></h2>
+          <div class="ecosystem-grid">
+            <div class="eco-stakeholder-list">
+              <div class="glass-card eco-item-card" style="border-color:var(--primary);" onmouseenter="highlightEcoNode('consumer')">
+                <h4>Consumers</h4>
+                <ul>
+                  <li>• Safe, verified commerce</li>
+                  <li>• Clear testing parameters</li>
+                  <li>• Compare product trust</li>
+                </ul>
+              </div>
+              <div class="glass-card eco-item-card" style="border-color:var(--accent);" onmouseenter="highlightEcoNode('brand')">
+                <h4>Brands</h4>
+                <ul>
+                  <li>• Direct consumer credibility</li>
+                  <li>• Faster checkout conversions</li>
+                  <li>• Cost-effective bulk testing</li>
+                </ul>
+              </div>
+              <div class="glass-card eco-item-card" style="border-color:var(--secondary);" onmouseenter="highlightEcoNode('lab')">
+                <h4>Laboratories</h4>
+                <ul>
+                  <li>• Digital client acquisition</li>
+                  <li>• Higher testing capacity fill</li>
+                  <li>• Structured reporting tools</li>
+                </ul>
+              </div>
+              <div class="glass-card eco-item-card" style="border-color:var(--red);" onmouseenter="highlightEcoNode('retailer')">
+                <h4>Retailers</h4>
+                <ul>
+                  <li>• Stock verified inventory</li>
+                  <li>• Zero counterfeit product risks</li>
+                  <li>• Trusted point-of-sale reputation</li>
+                </ul>
+              </div>
+            </div>
+            <div class="eco-graphic">
+              <!-- Orbit SVG with animateMotion for Comets -->
+              <svg width="300" height="300" viewBox="0 0 300 300" style="position: absolute; overflow: visible; z-index:5; pointer-events:none;">
+                <!-- Comet 1 moving around ring-1 (radius: 95) -->
+                <circle r="4" fill="var(--primary)" filter="drop-shadow(0 0 4px var(--primary))">
+                  <animateMotion dur="7s" repeatCount="indefinite" path="M 150 55 A 95 95 0 1 1 149.9 55 Z" />
+                </circle>
+                <!-- Comet 2 moving around ring-2 (radius: 140) -->
+                <circle r="4" fill="var(--accent)" filter="drop-shadow(0 0 4px var(--accent))">
+                  <animateMotion dur="11s" repeatCount="indefinite" path="M 150 10 A 140 140 0 1 1 149.9 10 Z" />
+                </circle>
+              </svg>
+              
+              <div class="eco-hub">
+                <span style="font-family:var(--font-outfit); font-size:10px; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.05em;">Shield Hub</span>
+              </div>
+              <div class="eco-orbit-ring eco-ring-1">
+                <div class="eco-node primary" id="node-lab" style="top: 0; left: 50%; transform: translate(-50%, -50%);">🔬</div>
+                <div class="eco-node accent" id="node-brand" style="bottom: 0; left: 50%; transform: translate(-50%, 50%);">🏢</div>
+              </div>
+              <div class="eco-orbit-ring eco-ring-2">
+                <div class="eco-node secondary" id="node-retailer" style="top: 50%; left: 0; transform: translate(-50%, -50%);">🛒</div>
+                <div class="eco-node red" id="node-consumer" style="top: 50%; right: 0; transform: translate(50%, -50%);">👥</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 7: BUSINESS MODEL -->
+      <div class="slide" id="slide-7">
+        <div class="slide-content">
+          <div class="slide-num-indicator">07 / Business Model</div>
+          <h2 class="title-g">High-Margin <span>Revenue Streams</span></h2>
+          <div class="biz-grid">
+            <div class="rev-streams-box">
+              <div class="rev-item">
+                <div>
+                  <h4>Product Verification Fees</h4>
+                  <p>Paid by brands per SKU tested and certified</p>
+                </div>
+                <div class="rev-val-badge">₹2k - 10k</div>
+              </div>
+              <div class="rev-item">
+                <div>
+                  <h4>Marketplace Commission</h4>
+                  <p>Transaction fee on our verified product directory sales</p>
+                </div>
+                <div class="rev-val-badge">10 - 15%</div>
+              </div>
+              <div class="rev-item">
+                <div>
+                  <h4>SaaS Subscriptions</h4>
+                  <p>Dashboard analytics for premium sellers & lab management</p>
+                </div>
+                <div class="rev-val-badge">₹999/mo</div>
+              </div>
+            </div>
+            <div class="revenue-flywheel">
+              <div class="flywheel-stage">
+                <div class="flywheel-num">1</div>
+                <div>
+                  <h4 style="font-size:14px; font-weight:800;">Testing Commission</h4>
+                  <p style="font-size:12px; color:var(--text-muted);">Direct commissions on tests routed to partner labs.</p>
+                </div>
+              </div>
+              <div class="flywheel-stage">
+                <div class="flywheel-num">2</div>
+                <div>
+                  <h4 style="font-size:14px; font-weight:800;">Trust Badge Placement</h4>
+                  <p style="font-size:12px; color:var(--text-muted);">Priority listing visibility for tested/highly-rated consumer brands.</p>
+                </div>
+              </div>
+              <div class="flywheel-stage">
+                <div class="flywheel-num">3</div>
+                <div>
+                  <h4 style="font-size:14px; font-weight:800;">Enterprise APIs</h4>
+                  <p style="font-size:12px; color:var(--text-muted);">Verification APIs feeding quick commerce and retail checkout tools.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 8: WHY NOW (Urgency Dials) -->
+      <div class="slide" id="slide-8">
+        <div class="slide-content">
+          <div class="slide-num-indicator">08 / Why Now</div>
+          <h2 class="title-g">Market <span>Timing Advantage</span></h2>
+          <p class="subtitle-g">Regulatory enforcement combined with massive shifts in consumer expectations opens a direct window for a dominant trust aggregator.</p>
+          <div class="wn-grid tilt-card-wrap">
+            <div class="glass-card wn-card tilt-card">
+              <div class="card-accent-line primary"></div>
+              <div class="wn-header-row">
+                <div class="wn-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <!-- Radial progress dial: 92% -->
+                <div class="radial-progress-container">
+                  <svg class="radial-progress" viewBox="0 0 36 36">
+                    <path class="bg-circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                    <path class="val-circle" stroke-dasharray="92, 100" stroke="var(--primary)" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                  </svg>
+                  <div class="radial-progress-text">92%</div>
+                </div>
+              </div>
+              <h3>Regulatory Push</h3>
+              <p>Strict mandates from FSSAI and CDSCO on ingredient validation, advertising transparency, and certification compliance are driving testing demand.</p>
+            </div>
+            <div class="glass-card wn-card tilt-card">
+              <div class="card-accent-line accent"></div>
+              <div class="wn-header-row">
+                <div class="wn-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <!-- Radial progress dial: 85% -->
+                <div class="radial-progress-container">
+                  <svg class="radial-progress" viewBox="0 0 36 36">
+                    <path class="bg-circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                    <path class="val-circle" stroke-dasharray="85, 100" stroke="var(--accent)" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                  </svg>
+                  <div class="radial-progress-text">85%</div>
+                </div>
+              </div>
+              <h3>Consumer Shift</h3>
+              <p>Health-focused shoppers increasingly search for transparency, read nutrition labels, and seek independent reviews before buying.</p>
+            </div>
+            <div class="glass-card wn-card tilt-card">
+              <div class="card-accent-line secondary"></div>
+              <div class="wn-header-row">
+                <div class="wn-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <!-- Radial progress dial: 74% -->
+                <div class="radial-progress-container">
+                  <svg class="radial-progress" viewBox="0 0 36 36">
+                    <path class="bg-circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                    <path class="val-circle" stroke-dasharray="74, 100" stroke="var(--secondary)" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                  </svg>
+                  <div class="radial-progress-text">74%</div>
+                </div>
+              </div>
+              <h3>Q-Commerce Shift</h3>
+              <p>10-minute delivery apps bypass sensory inspection. Consumers rely entirely on fast, visual, and verified digital signals on their screens.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 9: COMPETITIVE ADVANTAGE -->
+      <div class="slide" id="slide-9">
+        <div class="slide-content">
+          <div class="slide-num-indicator">09 / Competitive Advantage</div>
+          <h2 class="title-g">Building Our <span>Defensible Moat</span></h2>
+          <p class="subtitle-g">By consolidating laboratories, scoring databases, and direct commerce checkouts, we establish a defensible network loop.</p>
+          <div class="moats-grid tilt-card-wrap">
+            <div class="glass-card moat-card tilt-card">
+              <h4>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Verification Infrastructure
+              </h4>
+              <p>Consolidated NABL/FSSAI certified partner lab networks. Direct API integration and logistics routing block competition from duplicating testing workflows.</p>
+            </div>
+            <div class="glass-card moat-card tilt-card">
+              <h4>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/></svg>
+                Proprietary Data Layer
+              </h4>
+              <p>Unique batch testing reports, safety scoring history, and compliance trends create the largest independent database of verified products in India.</p>
+            </div>
+            <div class="glass-card moat-card tilt-card">
+              <h4>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Network Effects
+              </h4>
+              <p>More certified brands attract health-conscious consumers, who demand more verified retailers, driving more laboratories to join to fulfill test volumes.</p>
+            </div>
+            <div class="glass-card moat-card tilt-card">
+              <h4>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8l-4 4h8l-4 4"/></svg>
+                Verification-First Brand
+              </h4>
+              <p>Our verification badge acts as the standard trust signal for consumer products, similar to Intel Inside for computer chips.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 10: GTM STRATEGY -->
+      <div class="slide" id="slide-10">
+        <div class="slide-content">
+          <div class="slide-num-indicator">10 / Go To Market</div>
+          <h2 class="title-g">Scale Strategy &amp; <span>Phased Rollout</span></h2>
+          <p class="subtitle-g">City-first focus and high-risk categories will drive early traction and validate the commercial model before nationwide expansion.</p>
+          <div class="gtm-grid tilt-card-wrap">
+            <div class="glass-card gtm-card tilt-card" data-phase="01">
+              <div class="card-accent-line primary"></div>
+              <span class="gtm-phase-badge">Phase 1</span>
+              <h4>Category Selection</h4>
+              <ul>
+                <li>Focus on supplements & baby food</li>
+                <li>Onboard initial 30 test labs</li>
+                <li>Setup verification dashboard for brand owners</li>
+                <li>Acquire 100 early pilot brands</li>
+              </ul>
+            </div>
+            <div class="glass-card gtm-card sec tilt-card" data-phase="02">
+              <div class="card-accent-line accent"></div>
+              <span class="gtm-phase-badge">Phase 2</span>
+              <h4>Regional Focus</h4>
+              <ul>
+                <li>Rollout pilot in Hyderabad & Bengaluru</li>
+                <li>Onboard local quick commerce retailers</li>
+                <li>Launch QR badge tracking on physical packs</li>
+                <li>Consumer marketing waitlist campaigns</li>
+              </ul>
+            </div>
+            <div class="glass-card gtm-card gold tilt-card" data-phase="03">
+              <div class="card-accent-line secondary"></div>
+              <span class="gtm-phase-badge">Phase 3</span>
+              <h4>National Scale</h4>
+              <ul>
+                <li>Expand to Top-10 Indian metro cities</li>
+                <li>API integrations for major marketplaces</li>
+                <li>Launch AI-based automated trust scores</li>
+                <li>Establish National Trust Layer registry</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 11: TRACTION -->
+      <div class="slide" id="slide-11">
+        <div class="slide-content">
+          <div class="slide-num-indicator">11 / Traction</div>
+          <h2 class="title-g">Early Validation &amp; <span>Milestones</span></h2>
+          <div class="traction-layout">
+            <div class="glass-card trac-card-half">
+              <h3><span style="color:var(--primary);">✓</span> Current Progress</h3>
+              <div class="trac-item-row">
+                <div class="trac-indicator">✓</div>
+                <div class="trac-text">
+                  <h4>Platform Architecture Complete</h4>
+                  <p>Core laboratory SaaS portals and client APIs are fully functional and in beta testing.</p>
+                </div>
+              </div>
+              <div class="trac-item-row">
+                <div class="trac-indicator">✓</div>
+                <div class="trac-text">
+                  <h4>Verification Model Established</h4>
+                  <p>Defined compliance checklist parameters and testing criteria with NABL auditors.</p>
+                </div>
+              </div>
+              <div class="trac-item-row">
+                <div class="trac-indicator">✓</div>
+                <div class="trac-text">
+                  <h4>Marketplace & Onboarding Strategy</h4>
+                  <p>Brand onboarding framework finalized, pipeline established with early brand owners.</p>
+                </div>
+              </div>
+            </div>
+            <div class="glass-card trac-card-half orange">
+              <h3><span style="color:var(--secondary);">→</span> Upcoming Milestones</h3>
+              <div class="trac-item-row">
+                <div class="trac-indicator">→</div>
+                <div class="trac-text">
+                  <h4>Initial Vendor Onboarding</h4>
+                  <p>Onboarding our first wave of certified laboratories and consumer product manufacturers.</p>
+                </div>
+              </div>
+              <div class="trac-item-row">
+                <div class="trac-indicator">→</div>
+                <div class="trac-text">
+                  <h4>Pilot Verification Rollout</h4>
+                  <p>Launching live batch testing cycles for selected product categories in Hyderabad.</p>
+                </div>
+              </div>
+              <div class="trac-item-row">
+                <div class="trac-indicator">→</div>
+                <div class="trac-text">
+                  <h4>Consumer Beta Launch</h4>
+                  <p>Opening public verified product directories and search portal for consumers.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 12: FUTURE VISION -->
+      <div class="slide" id="slide-12">
+        <div class="slide-content">
+          <div class="slide-num-indicator">12 / Future Vision</div>
+          <h2 class="title-g">Global Trust <span>Infrastructure Layer</span></h2>
+          <p class="subtitle-g">Beyond verification, we aim to build the digital infrastructure powering product safety checks for all e-commerce platforms.</p>
+          <div class="vision-layout tilt-card-wrap">
+            <div class="glass-card vision-subcard tilt-card">
+              <div class="vision-subcard-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 7.54 16.59l-1.42-1.42A8 8 0 1 0 6 12h2l-3 3-3-3h2a10 10 0 0 1 10-10zm0 4v4h4v-2h-2V6h-2z"/></svg>
+              </div>
+              <div class="vision-subcard-text">
+                <h4>AI-Based Trust Scoring</h4>
+                <p>Scaling audit evaluations, analyzing ingredient lists, and scoring manufacturers using machine learning models.</p>
+              </div>
+            </div>
+            <div class="glass-card vision-subcard tilt-card">
+              <div class="vision-subcard-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
+              </div>
+              <div class="vision-subcard-text">
+                <h4>QR-Based Authenticity</h4>
+                <p>Immutable, batch-specific serial codes printed on product packaging to track chain-of-custody checks.</p>
+              </div>
+            </div>
+            <div class="glass-card vision-subcard tilt-card">
+              <div class="vision-subcard-icon">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+              </div>
+              <div class="vision-subcard-text">
+                <h4>B2B Compliance API</h4>
+                <p>Verification APIs for quick-commerce supply checks and large-scale wholesale procurement programs.</p>
+              </div>
+            </div>
+            <div class="glass-card vision-subcard tilt-card">
+              <div class="vision-subcard-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10zM2 12h20"/></svg>
+              </div>
+              <div class="vision-subcard-text">
+                <h4>International Standards</h4>
+                <p>Standardizing cross-border verification checklists for import/export ingredient verification pipelines.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 13: FINANCIAL PROJECTIONS -->
+      <div class="slide" id="slide-13">
+        <div class="slide-content">
+          <div class="slide-num-indicator">13 / Projections</div>
+          <h2 class="title-g">Scalable <span>Market Projections</span></h2>
+          <div class="fin-layout">
+            <div class="fin-kpis-grid">
+              <div class="glass-card fin-kpi-card">
+                <div class="fin-kpi-val">₹42L</div>
+                <div class="fin-kpi-lbl">Projected Year 1 revenue</div>
+              </div>
+              <div class="glass-card fin-kpi-card">
+                <div class="fin-kpi-val">₹1.8Cr</div>
+                <div class="fin-kpi-lbl">Projected Year 2 revenue</div>
+              </div>
+              <div class="glass-card fin-kpi-card">
+                <div class="fin-kpi-val">72%</div>
+                <div class="fin-kpi-lbl">Gross Margin - Verification Stream</div>
+              </div>
+              <div class="glass-card fin-kpi-card">
+                <div class="fin-kpi-val">M18</div>
+                <div class="fin-kpi-lbl">Projected cash break-even month</div>
+              </div>
+            </div>
+            <div class="glass-card fin-chart-card">
+              <div class="chart-header">
+                <span>Revenue Growth Curve</span>
+                <span>(In ₹ Lakhs)</span>
+              </div>
+              <div style="position:relative; width:100%; height:200px;">
+                <canvas id="finChartModern"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 14: FUNDING ASK (Interactive Donut Chart) -->
+      <div class="slide" id="slide-14">
+        <div class="slide-content">
+          <div class="slide-num-indicator">14 / Seed Round</div>
+          <h2 class="title-g">Seeking <span>Strategic Investment</span></h2>
+          <div class="ask-layout">
+            <div class="glass-card ask-visual-card">
+              <span style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Target Fundraise</span>
+              <div class="ask-amount-g">$110,000</div>
+              
+              <!-- SVG Donut Chart representation -->
+              <div class="donut-visual-container">
+                <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut">
+                  <circle class="donut-hole" cx="21" cy="21" r="15.915" fill="#ffffff"></circle>
+                  <circle class="donut-ring" cx="21" cy="21" r="15.915" fill="transparent" stroke="rgba(15,23,42,0.04)" stroke-width="4.5"></circle>
+                  
+                  <!-- Segment 1: Tech 40% -->
+                  <circle id="donut-seg-1" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--primary)" stroke-width="4.8" stroke-dasharray="40 60" stroke-dashoffset="100" style="transition: stroke-width 0.3s; cursor: pointer;"></circle>
+                  <!-- Segment 2: Vendor 25% -->
+                  <circle id="donut-seg-2" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--accent)" stroke-width="4.8" stroke-dasharray="25 75" stroke-dashoffset="60" style="transition: stroke-width 0.3s; cursor: pointer;"></circle>
+                  <!-- Segment 3: Ops 20% -->
+                  <circle id="donut-seg-3" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--secondary)" stroke-width="4.8" stroke-dasharray="20 80" stroke-dashoffset="35" style="transition: stroke-width 0.3s; cursor: pointer;"></circle>
+                  <!-- Segment 4: Marketing 15% -->
+                  <circle id="donut-seg-4" class="donut-segment" cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--red)" stroke-width="4.8" stroke-dasharray="15 85" stroke-dashoffset="15" style="transition: stroke-width 0.3s; cursor: pointer;"></circle>
+                </svg>
+                <div class="donut-labels-overlay" id="donut-overlay-text">100%</div>
+              </div>
+            </div>
+            <div class="ask-allocation">
+              <div class="alloc-row" id="alloc-row-1" onmouseenter="focusDonutSegment(1)" onmouseleave="resetDonutFocus()">
+                <div class="alloc-info">
+                  <span style="color:var(--primary);">Technology &amp; Platform Integrations</span>
+                  <span>40%</span>
+                </div>
+                <div class="alloc-bar-bg"><div class="alloc-bar-fill" style="width: 40%; background:var(--primary);"></div></div>
+              </div>
+              <div class="alloc-row" id="alloc-row-2" onmouseenter="focusDonutSegment(2)" onmouseleave="resetDonutFocus()">
+                <div class="alloc-info">
+                  <span style="color:var(--accent);">Vendor &amp; Laboratory Onboarding</span>
+                  <span>25%</span>
+                </div>
+                <div class="alloc-bar-bg"><div class="alloc-bar-fill" style="width: 25%; background:var(--accent);"></div></div>
+              </div>
+              <div class="alloc-row" id="alloc-row-3" onmouseenter="focusDonutSegment(3)" onmouseleave="resetDonutFocus()">
+                <div class="alloc-info">
+                  <span style="color:var(--secondary);">Operations &amp; Regulatory Compliance</span>
+                  <span>20%</span>
+                </div>
+                <div class="alloc-bar-bg"><div class="alloc-bar-fill" style="width: 20%; background:var(--secondary);"></div></div>
+              </div>
+              <div class="alloc-row" id="alloc-row-4" onmouseenter="focusDonutSegment(4)" onmouseleave="resetDonutFocus()">
+                <div class="alloc-info">
+                  <span style="color:var(--red);">Marketing &amp; Early Brand Partnerships</span>
+                  <span>15%</span>
+                </div>
+                <div class="alloc-bar-bg"><div class="alloc-bar-fill" style="width: 15%; background:var(--red);"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 15: CLOSING -->
+      <div class="slide" id="slide-15">
+        <div class="slide-content">
+          <div class="close-layout">
+            <svg class="close-logo-heartbeat" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L3 5v6c0 5.52 4.48 10 9 10s9-4.48 9-10V5l-9-3z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="slide-num-indicator" style="z-index: 5;">MeraFilter — Growth Partner</div>
+            <div class="close-quote">"Trust Creates Commerce."</div>
+            <p class="subtitle-g" style="text-align:center; max-width:640px; z-index: 5;">We believe the future of commerce will not be driven only by price or convenience — but by transparency, verification, and consumer trust.</p>
+            <div class="close-footer">
+              <a href="javascript:void(0)" class="close-btn-cta">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 7a4 4 0 100-8 4 4 0 000 8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Founder: <strong>Parveen Kumar</strong></span>
+              </a>
+              <a href="mailto:growth@merafilter.in" class="close-btn-cta">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>growth@merafilter.in</span>
+              </a>
+              <a href="https://merafilter.in" target="_blank" class="close-btn-cta">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 000 20M2 12h20" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>merafilter.in</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar dot navigation panel -->
+    <div id="dot-nav"></div>
+
+    <!-- Footer Controls -->
+    <footer>
+      <div class="slide-counter">
+        <span id="current-slide-lbl">01</span> / 15
+      </div>
+      <div class="controls-btn-container">
+        <button class="control-btn" id="btn-prev" disabled>
+          <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button class="control-btn" id="btn-next">
+          <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    /* ═══ SLIDE PRESENTATION STATE ENGINE ═══ */
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    const currentSlideLbl = document.getElementById('current-slide-lbl');
+    const progressBar = document.getElementById('progress-bar');
+    const dotNavContainer = document.getElementById('dot-nav');
+    
+    let currentIdx = 0;
+    const totalSlides = slides.length;
+
+    // Build dots dynamically
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = `nav-dot ${i === 0 ? 'active' : ''}`;
+      dot.addEventListener('click', () => goToSlide(i));
+      dotNavContainer.appendChild(dot);
+    }
+    const dots = document.querySelectorAll('.nav-dot');
+
+    function updatePresentation() {
+      // Update slides active/prev classes
+      slides.forEach((slide, idx) => {
+        slide.classList.remove('active', 'prev');
+        if (idx === currentIdx) {
+          slide.classList.add('active');
+        } else if (idx < currentIdx) {
+          slide.classList.add('prev');
+        }
+      });
+
+      // Update footer controls
+      prevBtn.disabled = currentIdx === 0;
+      nextBtn.disabled = currentIdx === totalSlides - 1;
+
+      // Update counters & progress
+      const displayNum = String(currentIdx + 1).padStart(2, '0');
+      currentSlideLbl.innerText = displayNum;
+      
+      const progressPercent = ((currentIdx + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Update sidebar dots
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function goToSlide(idx) {
+      if (idx >= 0 && idx < totalSlides) {
+        currentIdx = idx;
+        updatePresentation();
+      }
+    }
+
+    function nextSlide() {
+      if (currentIdx < totalSlides - 1) {
+        currentIdx++;
+        updatePresentation();
+      }
+    }
+
+    function prevSlide() {
+      if (currentIdx > 0) {
+        currentIdx--;
+        updatePresentation();
+      }
+    }
+
+    // Event Listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    // Keyboard bindings
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      }
+    });
+
+    // Touch Swiping support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    window.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    window.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      const threshold = 50;
+      if (touchStartX - touchEndX > threshold) {
+        nextSlide(); // swipe left, show next
+      } else if (touchEndX - touchStartX > threshold) {
+        prevSlide(); // swipe right, show prev
+      }
+    }
+
+    /* ═══ INTERACTIVE: TAM/SAM/SOM HIGHLIGHTS ═══ */
+    function highlightTSS(level) {
+      const rows = document.querySelectorAll('.tss-row');
+      rows.forEach(row => row.classList.remove('active'));
+      
+      const targetMap = {
+        'tam': 2,
+        'sam': 1,
+        'som': 0
+      };
+      
+      rows[targetMap[level]].classList.add('active');
+
+      const tamCircle = document.getElementById('v-tam');
+      const samCircle = document.getElementById('v-sam');
+      const somCircle = document.getElementById('v-som');
+
+      tamCircle.classList.remove('highlight');
+      samCircle.classList.remove('highlight');
+      somCircle.classList.remove('highlight');
+
+      if (level === 'tam') tamCircle.classList.add('highlight');
+      if (level === 'sam') samCircle.classList.add('highlight');
+      if (level === 'som') somCircle.classList.add('highlight');
+    }
+
+    /* ═══ INTERACTIVE: HOW IT WORKS STEP DETAILED BOX ═══ */
+    const stepDetails = {
+      1: {
+        ico: '📤',
+        title: 'Step 1: Brand Submits Products',
+        desc: 'Brand owners registers SKU details on our automated dashboard portal and ships batch-specific samples directly to our partner collection agents.',
+        wire: `<div class="flow-w-line brand-accent">MeraFilter Portal — Dashboard</div>
+               <div class="flow-w-line" style="width: 80%;">SKU Name: Premium Supplement Gold</div>
+               <div class="flow-w-line" style="width: 50%;">Batch Code: #HYD-901A</div>
+               <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                 <span style="color:var(--primary);">[Pending Sample Delivery]</span>
+                 <span style="opacity:0.3;">v1.2</span>
+               </div>`
+      },
+      2: {
+        ico: '🔬',
+        title: 'Step 2: Partner Lab Testing',
+        desc: 'Sample batches are securely routed to NABL-accredited, independent testing laboratories. Checks cover raw quality, toxins, pesticide residues, and nutrition claims.',
+        wire: `<div class="flow-w-line brand-accent">Laboratory Portal — Order #45</div>
+               <div class="flow-w-line" style="width: 90%;">Assigned to: Bangalore Biotech Labs</div>
+               <div class="flow-w-line" style="width: 70%;">Test Suite: Pesticides &amp; Toxins Check</div>
+               <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                 <span style="color:var(--accent);">[Testing In Progress...]</span>
+                 <span style="opacity:0.3;">48h ETA</span>
+               </div>`
+      },
+      3: {
+        ico: '📄',
+        title: 'Step 3: Data Verification',
+        desc: 'Laboratory reports, parameter results, and testing stamps are uploaded and cryptographically locked on the platform ledger.',
+        wire: `<div class="flow-w-line brand-accent">Cryptographic Ledger Registry</div>
+               <div class="flow-w-line" style="width: 85%;">Verified Hash: 0x9f8c2e...881a</div>
+               <div class="flow-w-line" style="width: 60%;">Testing Parameters: 12/12 Passed</div>
+               <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                 <span style="color:var(--primary);">[PDF Certificate Generated]</span>
+                 <span style="opacity:0.3;">Signed</span>
+               </div>`
+      },
+      4: {
+        ico: '🛡️',
+        title: 'Step 4: Trust Score & Badging',
+        desc: 'Product receives an automated trust score. Earning the MeraFilter stamp unlocks listing privileges for partnered retailer networks.',
+        wire: `<div class="flow-w-line brand-accent">MeraFilter Security Engine</div>
+               <div class="flow-w-line" style="width: 75%;">Trust Index Score: 94 / 100</div>
+               <div class="flow-w-line" style="width: 50%;">Badge Status: A+ Premium Safe</div>
+               <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                 <span style="color:var(--secondary);">[MeraFilter Badge Unlocked]</span>
+                 <span style="opacity:0.3;">Active</span>
+               </div>`
+      },
+      5: {
+        ico: '🛒',
+        title: 'Step 5: Safe Consumer Checkout',
+        desc: 'Shoppers purchase verified goods through the marketplace directory, with complete visibility into batch certificates linked directly via packaging QR codes.',
+        wire: `<div class="flow-w-line brand-accent">Consumer Checkout Integration</div>
+               <div class="flow-w-line" style="width: 90%;">Item: Organic Supplement (Batch #HYD-901A)</div>
+               <div class="flow-w-line" style="width: 40%;">Trust Verification: Checked 100%</div>
+               <div style="display:flex; justify-content:space-between; margin-top:4px;">
+                 <span style="color:var(--primary);">[Secure Purchase Cleared]</span>
+                 <span style="opacity:0.3;">Checkout</span>
+               </div>`
+      }
+    };
+
+    function activateFlowStep(stepNum) {
+      const stepCards = document.querySelectorAll('.flow-step-card');
+      stepCards.forEach((card, idx) => {
+        card.classList.toggle('active', idx === (stepNum - 1));
+      });
+
+      const detailsBox = document.getElementById('flow-content-box');
+      const stepData = stepDetails[stepNum];
+      
+      detailsBox.innerHTML = `
+        <div class="flow-details-ico">${stepData.ico}</div>
+        <div>
+          <h4 class="flow-title" style="font-size:18px; margin-bottom:6px;">${stepData.title}</h4>
+          <p class="flow-desc" style="font-size:14px; line-height:1.5;">${stepData.desc}</p>
+        </div>
+      `;
+
+      // Update the wireframe preview code block
+      document.getElementById('flow-wireframe-mock').innerHTML = stepData.wire;
+    }
+
+    /* ═══ INTERACTIVE: ECOSYSTEM NODE HIGHLIGHT ═══ */
+    function highlightEcoNode(nodeName) {
+      const nodes = {
+        'lab': 'node-lab',
+        'brand': 'node-brand',
+        'retailer': 'node-retailer',
+        'consumer': 'node-consumer'
+      };
+      
+      // Reset all nodes opacity/transform
+      Object.values(nodes).forEach(id => {
+        const el = document.getElementById(id);
+        el.style.transform = 'scale(1)';
+        el.style.boxShadow = '0 4px 12px rgba(15, 23, 42, 0.05)';
+      });
+
+      // Highlight target node
+      const targetEl = document.getElementById(nodes[nodeName]);
+      if (targetEl) {
+        targetEl.style.transform = 'scale(1.25)';
+        targetEl.style.boxShadow = `0 0 20px rgba(5, 150, 105, 0.25)`;
+      }
+    }
+
+    /* ═══ INTERACTIVE: DONUT ALLOCATION CHART HIGHLIGHTS ═══ */
+    const donutAllocValues = {
+      1: '40% Tech',
+      2: '25% Labs',
+      3: '20% Ops',
+      4: '15% Mktg'
+    };
+
+    function focusDonutSegment(segNum) {
+      // Scale down other segments and highlight target
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`donut-seg-${i}`);
+        if (i === segNum) {
+          el.style.strokeWidth = '6';
+        } else {
+          el.style.strokeWidth = '3';
+          el.style.opacity = '0.5';
+        }
+      }
+      document.getElementById('donut-overlay-text').innerText = donutAllocValues[segNum];
+    }
+
+    function resetDonutFocus() {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`donut-seg-${i}`);
+        el.style.strokeWidth = '4.8';
+        el.style.opacity = '1';
+      }
+      document.getElementById('donut-overlay-text').innerText = '100%';
+    }
+
+    // Bidirectional event listeners for donut slices: hover on donut highlights list items too
+    window.addEventListener('load', () => {
+      for (let i = 1; i <= 4; i++) {
+        const seg = document.getElementById(`donut-seg-${i}`);
+        if (seg) {
+          seg.addEventListener('mouseenter', () => {
+            focusDonutSegment(i);
+            const row = document.getElementById(`alloc-row-${i}`);
+            if (row) row.style.background = 'rgba(15, 23, 42, 0.04)';
+          });
+          seg.addEventListener('mouseleave', () => {
+            resetDonutFocus();
+            const row = document.getElementById(`alloc-row-${i}`);
+            if (row) row.style.background = 'transparent';
+          });
+        }
+      }
+    });
+
+    /* ═══ PARTICLE CANVAS BACKGROUND FOR COVER ═══ */
+    function initParticles() {
+      const canvas = document.getElementById('particle-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const particles = [];
+      const particleCount = 40;
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 3 + 1.5,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          alpha: Math.random() * 0.25 + 0.15
+        });
+      }
+
+      function animate() {
+        // Only run animations if Slide 1 (idx === 0) is active to conserve processing power
+        if (currentIdx === 0) {
+          ctx.clearRect(0, 0, width, height);
+          
+          particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(5, 150, 105, ${p.alpha})`;
+            ctx.shadowBlur = 2;
+            ctx.shadowColor = 'var(--primary)';
+            ctx.fill();
+          });
+
+          // Draw connections
+          for (let i = 0; i < particleCount; i++) {
+            for (let j = i + 1; j < particleCount; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+
+              if (dist < 140) {
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = `rgba(5, 150, 105, ${(1 - dist / 140) * 0.15})`;
+                ctx.lineWidth = 0.8;
+                ctx.shadowBlur = 0;
+                ctx.stroke();
+              }
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+    window.addEventListener('load', initParticles);
+
+    /* ═══ FINANCIAL CHART ENGINE (CHART.JS) ═══ */
+    window.addEventListener('load', () => {
+      const ctx = document.getElementById('finChartModern').getContext('2d');
+      
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['M1','M3','M6','M9','M12','M15','M18'],
+          datasets: [
+            {
+              label: 'Verification Stream',
+              data: [1, 3.5, 8, 15, 25, 32, 42],
+              borderColor: '#059669',
+              backgroundColor: 'rgba(5, 150, 105, 0.05)',
+              borderWidth: 3,
+              fill: true,
+              tension: 0.4
+            },
+            {
+              label: 'SaaS & Ad placements',
+              data: [0, 0.5, 2, 5, 12, 22, 38],
+              borderColor: '#0891b2',
+              backgroundColor: 'rgba(8, 145, 178, 0.05)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: '#475569',
+                font: {
+                  family: "'Inter', sans-serif",
+                  size: 11
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(15, 23, 42, 0.03)' },
+              ticks: { color: '#475569' }
+            },
+            y: {
+              grid: { color: 'rgba(15, 23, 42, 0.03)' },
+              ticks: { color: '#475569' }
+            }
+          }
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>
